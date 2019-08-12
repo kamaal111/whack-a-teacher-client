@@ -22,11 +22,13 @@ class LobbyList extends Component {
 
     return (
       <div>
+        <ul>
         {this.props.lobbies.lobbies.map(lobby => (
-          <Link to={`/game/${lobby.id}`} key={lobby.id}>
+          <li key={lobby.id}><Link to={`/game/${lobby.id}`}>
             {lobby.game} {lobby.users !== undefined ? lobby.users.length : 0}/2
-          </Link>
+          </Link></li>
         ))}
+        </ul>
       </div>
     );
   }
