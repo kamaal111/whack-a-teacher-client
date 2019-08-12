@@ -5,6 +5,7 @@ import { Route } from 'react-router-dom'
 import store from './store'
 import CreateAccountFormContainer from './components/CreateAccountFormContainer'
 import LoginFormContainer from './components/LoginFormContainer'
+import LobbiesContainer from './components/LobbiesContainer'
 
 class App extends React.Component {
   render() {
@@ -13,6 +14,7 @@ class App extends React.Component {
         <div>
           <Route path='/' exact component={CreateAccountFormContainer}></Route>
           <Route path='/login' exact component={LoginFormContainer}></Route>
+          <Route path='/lobby' exact component={LobbiesContainer}></Route>
         </div>
       </Provider>
     );

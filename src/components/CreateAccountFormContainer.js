@@ -18,8 +18,7 @@ class CreateAccountFormContainer extends React.Component {
   onSubmit = e => {
     e.preventDefault()
     this.props.createAccount(this.state)
-    console.log('Account created')
-    this.props.history.push('/login')
+    this.props.history.push('/lobby')
     this.setState({
       name: '',
       password: ''
