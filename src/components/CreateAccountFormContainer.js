@@ -1,11 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { createAccount } from '../actions'
-import Authentication from './Authentication'
+import CreateAccountForm from './CreateAccountForm';
 
-class LandingPage extends React.Component {
+class CreateAccountFormContainer extends React.Component {
   state = {
-    username: '',
+    name: '',
     password: ''
   }
 
@@ -17,16 +17,16 @@ class LandingPage extends React.Component {
 
   onSubmit = e => {
     e.preventDefault()
-    // this.props.createAccount(this.state)
-    console.log('Account created')
+    this.props.createAccount(this.state)
+    this.props.history.push('/lobby')
     this.setState({
-      username: '',
+      name: '',
       password: ''
     })
   }
 
   render() {
-    return(<Authentication 
+    return(<CreateAccountForm 
       onChange={this.onChange}
       onSubmit={this.onSubmit}
       values={this.state}
@@ -34,4 +34,4 @@ class LandingPage extends React.Component {
   }
 }
 
-export default connect(null, { createAccount })(LandingPage)
+export default connect(null, { createAccount })(CreateAccountFormContainer)
