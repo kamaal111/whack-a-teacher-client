@@ -22,7 +22,7 @@ export default class GameInterfaceContainer extends React.Component {
 
   renderMole = () => {
     const randomHeight = Math.min(Math.floor(Math.random() * 80), 70)
-    const randomWidth = Math.min(Math.floor(Math.random() * 60), 53)
+    const randomWidth = Math.min(Math.floor(Math.random() * 60), 54.5)
 
     const moleStyle= {
       top: `${randomHeight}vh`,
