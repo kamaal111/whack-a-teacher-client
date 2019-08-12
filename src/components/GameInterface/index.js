@@ -1,5 +1,6 @@
 import React from 'react'
 import './GameInterface.css'
+import GameStatistics from '../GameStatistics'
 
 export default class GameInterfaceContainer extends React.Component {
   state = { mole: 0 }
@@ -28,13 +29,19 @@ export default class GameInterfaceContainer extends React.Component {
   render() {
     const moles = []
 
-    for (var i = 0; i < this.state.mole; i ++) {
-      moles.push(this.renderMole())
+    if (this.state.mole < 6) {
+      for (var i = 0; i < this.state.mole; i ++) {
+        moles.push(this.renderMole())
+      }
     }
 
     return (
-      <div id='battlefield'>
-        {moles}
+      <div id='game-interface'>
+        <div className='statistics'><GameStatistics/></div>
+        <div id='battlefield'>
+          {moles}
+        </div>
+        <div className='statistics'><GameStatistics/></div>
       </div>
     )
   }

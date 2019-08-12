@@ -1,14 +1,30 @@
+#game-interface {
+  margin: 10vh auto;
+  height: 60vh;;
+}
 #battlefield {
-  width: 600px;
-  height: 600px;
+  width: 60%;
+  height: 80vh;
   background-color: rgb(206, 229, 255);
   border: 2px solid black;
-  margin: 10vh auto;
+  box-sizing: border-box;
   position: relative;
+  float: left;
 }
 .mole {
   width: 50px;
   height: 50px;
   background-color: blue;
   position: absolute;
+}
+.statistics {
+  float: left;
+  width: 20%;
+  height: 80vh;
+}
+.statistics:nth-child(1) {
+  background-color: red;
+}
+.statistics:nth-child(3) {
+  background-color: yellow;
 }
