@@ -1,5 +1,5 @@
 import * as request from 'superagent';
-// const baseUrl = 'https://morning-caverns-95025.herokuapp.com'
+// const baseUrl = 'https://morning-caverns-95025.herokuapp.com';
 const baseUrl = 'http://localhost:4000';
 
 export const USER_CREATED = 'USER_CREATED';
@@ -17,8 +17,10 @@ export const createAccount = data => dispatch => {
     .post(`${baseUrl}/user`)
     .send(data)
     .then(res => {
-      const action = newUser(res.body);
+      // if (res.data !== 'OK') {
+      const action = newUser({ data });
       dispatch(action);
+      // }
     })
     .catch(console.error);
 };
