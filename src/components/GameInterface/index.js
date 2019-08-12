@@ -3,15 +3,17 @@ import './GameInterface.css'
 import GameStatistics from '../GameStatistics'
 
 export default class GameInterfaceContainer extends React.Component {
-  state = { start: false, mole: 0 }
+  state = { mole: 0, score: 0 }
 
   componentDidMount () {
-    if (this.state.start) {
-      setInterval(() => {
-        this.setState({ mole: this.state.mole + 1 })
-        console.log('this.state.mole test:', this.state.mole)
-      }, 1000)
-    }
+    setInterval(() => {
+      this.setState({ mole: this.state.mole + 1 })
+    }, 2000)
+  }
+
+  whackMole = () => {
+    console.log(5)
+    this.setState({ score: this.state.score + 1 })
   }
 
   renderMole = () => {
@@ -23,13 +25,8 @@ export default class GameInterfaceContainer extends React.Component {
       left: `${randomWidth}px`
     }
 
-    const mole = <div style={moleStyle} className='mole'></div>
-    console.log(mole)
+    const mole = <div style={moleStyle} className='mole' onClick={this.whackMole}></div>
     return mole
-  }
-
-  startGame = () => {
-    
   }
   
   render() {
@@ -40,10 +37,11 @@ export default class GameInterfaceContainer extends React.Component {
         moles.push(this.renderMole())
       }
     }
+    console.log(moles)
 
     return (
       <div id='game-interface'>
-        <div className='statistics'><GameStatistics/></div>
+        <div className='statistics'><GameStatistics player='Nicola' score={this.state.score}/></div>
         <div id='battlefield'>
           {moles}
         </div>

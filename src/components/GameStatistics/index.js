@@ -1,12 +1,10 @@
 import React from 'react'
 
-export default class GameStatisticsContainer extends React.Component {
-  render() {
-    return(
-      <div>
-        <p>Player</p>
-        <p>Score</p>
-      </div>
-    )
-  }
+export default function GameStatistics(props) {
+  return(
+    <div>
+      <p>{props.player}</p>
+      <p>Score: {props.score}</p>
+    </div>
+  )
 }
