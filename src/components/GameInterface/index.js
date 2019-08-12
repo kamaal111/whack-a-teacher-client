@@ -1,9 +1,12 @@
 import React from 'react'
+import './GameInterface.css'
 
-export default class GameContainer extends React.Component {
+export default class GameInterfaceContainer extends React.Component {
   render() {
     return(
-      <p>Play the game here</p>
+      <div>
+        <div id='battlefield'></div>
+      </div>
     )
   }
 }

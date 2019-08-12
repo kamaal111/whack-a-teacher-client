@@ -1,0 +1,7 @@
+#battlefield {
+  width: 60vw;
+  height: 80vh;
+  background-color: rgb(206, 229, 255);
+  border: 2px solid black;
+  margin: 10vh auto;
+}
