@@ -17,12 +17,12 @@ export default class GameInterfaceContainer extends React.Component {
           moles: [...this.state.moles, this.renderMole()] 
         })
       }
-    }, 100)
+    }, 1000)
   }
 
   renderMole = () => {
-    const randomHeight = Math.min(Math.floor(Math.random() * 80), 73)
-    const randomWidth = Math.min(Math.floor(Math.random() * 60), 56)
+    const randomHeight = Math.min(Math.floor(Math.random() * 80), 70)
+    const randomWidth = Math.min(Math.floor(Math.random() * 60), 53)
 
     const moleStyle= {
       top: `${randomHeight}vh`,
@@ -31,19 +31,12 @@ export default class GameInterfaceContainer extends React.Component {
 
     const mole = <div 
       style={moleStyle} 
-      className='mole' 
-      ></div>
+      className='mole'>
+      </div>
     return mole
   }
   
   render() {
-    // if (this.state.moleCount < 3) {
-    //   for (var i = 0; i < this.state.moleCount; i ++) {
-    //     this.state.moles.push(this.renderMole())
-    //     console.log(this.state.moles)
-    //   }
-    // }
-
     const moles = this.state.moles
     if (this.state.moleCount > 3) {
       moles.shift()
