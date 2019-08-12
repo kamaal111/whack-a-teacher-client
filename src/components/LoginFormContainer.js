@@ -1,9 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { createAccount } from '../actions'
-import Authentication from './Authentication'
+import LoginForm from './LoginForm';
 
-class LandingPage extends React.Component {
+class LoginFormContainer extends React.Component {
   state = {
     username: '',
     password: ''
@@ -26,7 +26,7 @@ class LandingPage extends React.Component {
   }
 
   render() {
-    return(<Authentication 
+    return(<LoginForm
       onChange={this.onChange}
       onSubmit={this.onSubmit}
       values={this.state}
@@ -34,4 +34,4 @@ class LandingPage extends React.Component {
   }
 }
 
-export default connect(null, { createAccount })(LandingPage)
+export default connect(null, { createAccount })(LoginFormContainer)
