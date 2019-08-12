@@ -3,41 +3,51 @@ import './GameInterface.css'
 import GameStatistics from '../GameStatistics'
 
 export default class GameInterfaceContainer extends React.Component {
-  state = { mole: 0, score: 0 }
+  state = { 
+    moleCount: 0,
+    moles: [],
+    score: 0 
+  }
 
   componentDidMount () {
     setInterval(() => {
-      this.setState({ mole: this.state.mole + 1 })
-    }, 2000)
-  }
-
-  whackMole = () => {
-    console.log(5)
-    this.setState({ score: this.state.score + 1 })
+      for (let i = 0; i < 1; i++) {
+        this.setState({ 
+          moleCount: this.state.moleCount + 1, 
+          moles: [...this.state.moles, this.renderMole()] 
+        })
+      }
+    }, 100)
   }
 
   renderMole = () => {
-    const randomHeight = Math.max(Math.floor(Math.random() * 550), 0)
-    const randomWidth = Math.max(Math.floor(Math.random() * 550), 0)
+    const randomHeight = Math.min(Math.floor(Math.random() * 80), 73)
+    const randomWidth = Math.min(Math.floor(Math.random() * 60), 56)
 
     const moleStyle= {
-      top: `${randomHeight}px`,
-      left: `${randomWidth}px`
+      top: `${randomHeight}vh`,
+      left: `${randomWidth}vw`
     }
 
-    const mole = <div style={moleStyle} className='mole' onClick={this.whackMole}></div>
+    const mole = <div 
+      style={moleStyle} 
+      className='mole' 
+      ></div>
     return mole
   }
   
   render() {
-    const moles = []
+    // if (this.state.moleCount < 3) {
+    //   for (var i = 0; i < this.state.moleCount; i ++) {
+    //     this.state.moles.push(this.renderMole())
+    //     console.log(this.state.moles)
+    //   }
+    // }
 
-    if (this.state.mole < 6) {
-      for (var i = 0; i < this.state.mole; i ++) {
-        moles.push(this.renderMole())
-      }
+    const moles = this.state.moles
+    if (this.state.moleCount > 3) {
+      moles.shift()
     }
-    console.log(moles)
 
     return (
       <div id='game-interface'>
