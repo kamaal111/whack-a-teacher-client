@@ -3,13 +3,15 @@ import './GameInterface.css'
 import GameStatistics from '../GameStatistics'
 
 export default class GameInterfaceContainer extends React.Component {
-  state = { mole: 0 }
+  state = { start: false, mole: 0 }
 
   componentDidMount () {
-    setInterval(() => {
-      this.setState({ mole: this.state.mole + 1 })
-      console.log('this.state.mole test:', this.state.mole)
-    }, 1000)
+    if (this.state.start) {
+      setInterval(() => {
+        this.setState({ mole: this.state.mole + 1 })
+        console.log('this.state.mole test:', this.state.mole)
+      }, 1000)
+    }
   }
 
   renderMole = () => {
@@ -24,6 +26,10 @@ export default class GameInterfaceContainer extends React.Component {
     const mole = <div style={moleStyle} className='mole'></div>
     console.log(mole)
     return mole
+  }
+
+  startGame = () => {
+    
   }
   
   render() {

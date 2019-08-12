@@ -22,9 +22,9 @@
   width: 20%;
   height: 80vh;
 }
-.statistics:nth-child(1) {
+div.statistics:nth-child(1) {
   background-color: red;
 }
-.statistics:nth-child(3) {
+div.statistics:nth-child(3) {
   background-color: yellow;
 }
