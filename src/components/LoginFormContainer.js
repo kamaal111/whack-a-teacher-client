@@ -5,7 +5,7 @@ import LoginForm from './LoginForm';
 
 class LoginFormContainer extends React.Component {
   state = {
-    username: '',
+    name: '',
     password: ''
   }
 
@@ -18,9 +18,9 @@ class LoginFormContainer extends React.Component {
   onSubmit = e => {
     e.preventDefault()
     // this.props.createAccount(this.state)
-    console.log('Account created')
+    this.props.history.push('/lobby')
     this.setState({
-      username: '',
+      name: '',
       password: ''
     })
   }

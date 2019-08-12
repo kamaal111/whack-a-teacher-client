@@ -5,7 +5,7 @@ import CreateAccountForm from './CreateAccountForm';
 
 class CreateAccountFormContainer extends React.Component {
   state = {
-    username: '',
+    name: '',
     password: ''
   }
 
@@ -17,10 +17,10 @@ class CreateAccountFormContainer extends React.Component {
 
   onSubmit = e => {
     e.preventDefault()
-    // this.props.createAccount(this.state)
-    console.log('Account created')
+    this.props.createAccount(this.state)
+    this.props.history.push('/lobby')
     this.setState({
-      username: '',
+      name: '',
       password: ''
     })
   }
