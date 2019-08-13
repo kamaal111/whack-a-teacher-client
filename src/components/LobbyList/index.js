@@ -9,13 +9,13 @@ class LobbyListContainer extends Component {
   state = { lobbyName: '' };
 
   componentDidMount() {
-    if (this.props.users.activeUser === null) {
-      return this.props.history.push('/login');
-    }
+    // if (this.props.users.activeUser === null) {
+    //   return this.props.history.push('/login');
+    // }
 
-    if (this.props.users.activeUser.autherized === false) {
-      return this.props.history.push('/login');
-    }
+    // if (this.props.users.activeUser.autherized === false) {
+    //   return this.props.history.push('/login');
+    // }
   }
 
   submitLobby = e => {

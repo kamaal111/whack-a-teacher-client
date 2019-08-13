@@ -7,21 +7,8 @@ export default function LobbyList(props) {
     <div id="lobby-list-container">
       <div id="lobby-container">
         <h2>Lobbies</h2>
-        {/* <ul id='lobby-list'>
-          {props.lobbies.map(lobby => (
-            <li key={lobby.id}>
-              <Link
-                to={`/game/${lobby.id}`}
-                onClick={() => console.log('clicked')}
-              >
-                {console.log(lobby)}
-                {lobby.game}{' '}
-                {lobby.users !== undefined ? lobby.users.length : 0}/2
-              </Link>
-            </li>
-          ))}
-        </ul> */}
-        <div id="table-container">
+
+        <div id='table-container'>
           <table>
             <thead>
               <tr>
@@ -32,20 +19,31 @@ export default function LobbyList(props) {
             </thead>
             <tbody>
               {props.lobbies.map(lobby => {
-                return (
-                  <tr key={lobby.id}>
+
+                if (lobby.users.length === 2) {
+                  return <tr key={lobby.id}>
                     <td>{lobby.game}</td>
                     <td>{lobby.users.length} / 2</td>
-                    <td>
-                      <Link to={`/game/${lobby.id}`}>Join</Link>
-                    </td>
+                    <td className='game-full'>Game full</td>
                   </tr>
-                );
+                } else {
+                  return <tr key={lobby.id}>
+                    <td>{lobby.game}</td>
+                    <td>{lobby.users.length} / 2</td>
+                    <td><Link to={`/game/${lobby.id}`}>Join</Link></td>
+                  </tr>
+                }
               })}
             </tbody>
           </table>
         </div>
-        <p>X players online</p>
+        {props.lobbies.reduce((total, current, array) => {
+          console.log(current.users.length, total)
+          if (array === props.lobbies.length - 1) {
+            return <p>{total} players online</p>
+          }
+          return total + current.users.length
+        }, 0)}
       </div>
 
       <div id="create-lobby-container">
