@@ -9,16 +9,11 @@ function LoginFormContainer({
   users
 }) {
   const [state, setState] = useState({ name: '', password: '' });
-  const [status, setStatus] = useState(users.status);
 
   useEffect(() => {
-    if (status === 'OK') {
+    if (users.status === 'OK') {
       history.push('/lobby');
     }
-  }, [status]);
-
-  useEffect(() => {
-    setStatus(users.status);
   }, [users.status]);
 
   const onChange = e => {
