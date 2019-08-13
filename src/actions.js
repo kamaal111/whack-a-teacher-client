@@ -3,12 +3,13 @@ import * as request from 'superagent';
 const baseUrl = 'https://morning-caverns-95025.herokuapp.com';
 // const baseUrl = 'http://localhost:4000';
 
-export const USER_CREATED = 'USER_CREATED';
+export const USE_USER = 'USE_USER';
+export const AUTHERIZE_USER = 'AUTHERIZE_USER';
 export const ALL_LOBBIES = 'ALL_LOBBIES';
 
 const loginUser = (status, user) => {
   return {
-    type: USER_CREATED,
+    type: USE_USER,
     payload: { status, user }
   };
 };
@@ -52,6 +53,24 @@ export const loginInAccount = data => dispatch => {
       const action = loginUser(res.body.data, {});
       return dispatch(action);
     });
+};
+
+export const autherizeUser = (token, path) => async dispatch => {
+  const res = await request
+    .post(`${baseUrl}/${path}`)
+    .set({ Authorization: `Bearer ${token}` });
+
+  if (res.body.message === 'OK') {
+    return dispatch({
+      type: AUTHERIZE_USER,
+      payload: true
+    });
+  }
+
+  return dispatch({
+    type: AUTHERIZE_USER,
+    payload: false
+  });
 };
 
 export const allLobbies = payload => dispatch => {
