@@ -20,7 +20,7 @@ function LoginFormContainer({
         'Username and password combination incorrect. Please try again.'
       );
     }
-  }, [users.status]);
+  }, [history, users.status]);
 
   const onChange = e => {
     setState({ ...state, [e.target.name]: e.target.value });
