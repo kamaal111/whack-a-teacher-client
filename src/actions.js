@@ -55,10 +55,13 @@ export const loginInAccount = data => dispatch => {
     });
 };
 
-export const autherizeUser = (token, path) => async dispatch => {
+export const autherizeUser = (token, userId, lobbyId) => async dispatch => {
   const res = await request
-    .post(`${baseUrl}/${path}`)
-    .set({ Authorization: `Bearer ${token}` });
+    .put(`${baseUrl}/user/${userId}`)
+    .send({ id: lobbyId })
+    .set('authorization', `Bearer ${token}`);
+
+  console.log(res.body);
 
   if (res.body.message === 'OK') {
     return dispatch({
