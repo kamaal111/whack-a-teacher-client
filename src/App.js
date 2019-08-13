@@ -14,8 +14,8 @@ import './App.css';
 
 class App extends Component {
   source = new EventSource(
-    // `https://morning-caverns-95025.herokuapp.com/stream`
-    'http://localhost:4000/stream'
+    `https://morning-caverns-95025.herokuapp.com/stream`
+    // 'http://localhost:4000/stream'
   );
 
   componentDidMount() {
@@ -25,6 +25,7 @@ class App extends Component {
   }
 
   render() {
+    console.log(this.props.lobbies);
     return (
       <div>
         <Route path="/" exact component={CreateAccountFormContainer} />
@@ -34,7 +35,10 @@ class App extends Component {
           exact
           component={CreateGameInterfaceContainer}
         />
-        <Route path="/lobby" render={props => <LobbyListContainer {...props} />} />
+        <Route
+          path="/lobby"
+          render={props => <LobbyListContainer {...props} />}
+        />
         <Route
           path="/game/:gameId"
           exact
@@ -45,7 +49,9 @@ class App extends Component {
   }
 }
 
+const mapStateToProps = ({ lobbies }) => ({ lobbies });
+
 export default connect(
-  null,
+  mapStateToProps,
   { allLobbies }
 )(App);

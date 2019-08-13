@@ -99,7 +99,7 @@ class GameInterfaceContainer extends React.Component {
   render() {
     const moles = this.state.moles;
     console.log(moles);
-    if (this.state.moleCount > 3) {
+    if (this.state.moleCount > 15) {
       moles.shift();
     }
 
