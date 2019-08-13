@@ -43,3 +43,6 @@ table td {
 p {
   padding-bottom: .5rem;
 }
+.game-full {
+  color: red;
+}

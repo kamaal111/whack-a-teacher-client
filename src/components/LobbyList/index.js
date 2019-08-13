@@ -7,13 +7,13 @@ import { createLobbyAuthorization } from '../../actions';
 
 class LobbyListContainer extends Component {
   componentDidMount() {
-    if (this.props.users.activeUser === null) {
-      return this.props.history.push('/login');
-    }
+    // if (this.props.users.activeUser === null) {
+    //   return this.props.history.push('/login');
+    // }
 
-    if (this.props.users.activeUser.autherized === false) {
-      return this.props.history.push('/login');
-    }
+    // if (this.props.users.activeUser.autherized === false) {
+    //   return this.props.history.push('/login');
+    // }
   }
 
   render() {
