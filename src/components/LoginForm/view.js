@@ -10,7 +10,7 @@ export default function LoginForm(props) {
         <input type='text' name='name' onChange={props.onChange} value={props.values.username}></input>
         <label>Password:</label>
         <input type='password' name='password' onChange={props.onChange} value={props.values.password}></input>
-        <button type='submit'>Create account</button>
+        <button type='submit'>Log in</button>
       </form>
       <p>Don't have an account yet? <Link to='/'>Sign up here</Link></p>
     </div>

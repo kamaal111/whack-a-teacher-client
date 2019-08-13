@@ -1,9 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { createAccount } from '../actions'
-import CreateAccountForm from './CreateAccountForm';
+import { createAccount } from '../../actions'
+import LoginForm from './view';
 
-class CreateAccountFormContainer extends React.Component {
+class LoginFormContainer extends React.Component {
   state = {
     name: '',
     password: ''
@@ -17,7 +17,7 @@ class CreateAccountFormContainer extends React.Component {
 
   onSubmit = e => {
     e.preventDefault()
-    this.props.createAccount(this.state)
+    // this.props.createAccount(this.state)
     this.props.history.push('/lobby')
     this.setState({
       name: '',
@@ -26,7 +26,7 @@ class CreateAccountFormContainer extends React.Component {
   }
 
   render() {
-    return(<CreateAccountForm 
+    return(<LoginForm
       onChange={this.onChange}
       onSubmit={this.onSubmit}
       values={this.state}
@@ -34,4 +34,4 @@ class CreateAccountFormContainer extends React.Component {
   }
 }
 
-export default connect(null, { createAccount })(CreateAccountFormContainer)
+export default connect(null, { createAccount })(LoginFormContainer)

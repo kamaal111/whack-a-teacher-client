@@ -1,0 +1,30 @@
+#game-interface {
+  margin: 10vh auto;
+  height: 60vh;;
+}
+#battlefield {
+  width: 60vw;
+  height: 80vh;
+  background-color: rgb(206, 229, 255);
+  position: relative;
+  float: left;
+}
+.mole {
+  width: 5.5vw;
+  height: 10vh;
+  position: absolute;
+  background-image: url(../../moles/rein.png);
+  background-size: 100%;
+  border-radius: 50px;
+}
+.statistics {
+  float: left;
+  width: 20vw;
+  height: 80vh;
+}
+div.statistics:nth-child(1) {
+  background-color: red;
+}
+div.statistics:nth-child(3) {
+  background-color: yellow;
+}
