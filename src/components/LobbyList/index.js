@@ -6,7 +6,6 @@ import LobbyList from './view';
 import { createLobbyAuthorization } from '../../actions';
 
 class LobbyListContainer extends Component {
-<<<<<<< HEAD
   componentDidMount() {
     if (this.props.users.activeUser === null) {
       return this.props.history.push('/login');
@@ -19,14 +18,6 @@ class LobbyListContainer extends Component {
 
   render() {
     return <LobbyList lobbies={this.props.lobbies} />;
-=======
-  render() {
-    return (
-      <LobbyList 
-        lobbies={this.props.lobbies}
-      />
-    );
->>>>>>> 61e556d3c1ad495e15ae6c80a45b98fc8d07c34b
   }
 }
 
