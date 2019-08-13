@@ -1,29 +1,52 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './App.css';
 
-import { Provider } from 'react-redux';
 import { Route } from 'react-router-dom';
-import store from './store';
+import { connect } from 'react-redux';
+
 import CreateAccountFormContainer from './components/CreateAccountForm';
 import LobbyList from './components/LobbyList';
 import LoginFormContainer from './components/LoginForm';
 import CreateGameInterfaceContainer from './components/CreateGameInterface';
 import GameInterfaceContainer from './components/GameInterface';
 
-class App extends React.Component {
+import { allLobbies } from './actions';
+
+class App extends Component {
+  source = new EventSource(
+    `https://morning-caverns-95025.herokuapp.com/stream`
+  );
+
+  componentDidMount() {
+    this.source.onmessage = event => {
+      this.props.allLobbies(JSON.parse(event.data));
+    };
+  }
+
   render() {
     return (
-      <Provider store={store}>
-        <div>
-          <Route path="/" exact component={CreateAccountFormContainer} />
-          <Route path="/lobby" component={LobbyList} />
-          <Route path="/login" exact component={LoginFormContainer} />
-          <Route path="/create-game" exact component={CreateGameInterfaceContainer} />
-          <Route path="/game/:gameId" exact component={GameInterfaceContainer} />
-        </div>
-      </Provider>
+      <div>
+        <Route
+          path="/"
+          exact
+          render={props => (
+            <CreateAccountFormContainer {...props} user={{ name: 'rein' }} />
+          )}
+        />
+        <Route path="/lobby" component={LobbyList} />
+        <Route path="/login" exact component={LoginFormContainer} />
+        <Route
+          path="/create-game"
+          exact
+          component={CreateGameInterfaceContainer}
+        />
+        <Route path="/game/:gameId" exact component={GameInterfaceContainer} />
+      </div>
     );
   }
 }
 
-export default App;
+export default connect(
+  null,
+  { allLobbies }
+)(App);
