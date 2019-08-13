@@ -1,39 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { createAccount } from '../../actions';
 import CreateAccountForm from './view';
 
-class CreateAccountFormContainer extends React.Component {
-  state = {
-    name: '',
-    password: ''
-  };
+function CreateAccountFormContainer({
+  createAccount: createAccountAction,
+  history,
+  users
+}) {
+  const [state, setState] = useState({ name: '', password: '' });
+  const [feedback, setFeedback] = useState('')
 
-  onChange = e => {
-    this.setState({
-      [e.target.name]: e.target.value
-    });
-  };
-
-  onSubmit = e => {
-    e.preventDefault();
-    this.props.createAccount(this.state);
-
-    if (this.props.users.status === 'OK') {
-      return this.props.history.push('/lobby');
+  useEffect(() => {
+    if (users.status === 'OK') {
+      setFeedback('')
+      history.push('/lobby');
+    } else if (users.status === 'BAD REQUEST') {
+      setFeedback('Username already taken. Please choose a different one.')
     }
+  }, [history, users.status]);
+
+
+  const onChange = e => {
+    setState({ ...state, [e.target.name]: e.target.value });
   };
 
-  render() {
-    console.log('this.props', this.props);
-    return (
-      <CreateAccountForm
-        onChange={this.onChange}
-        onSubmit={this.onSubmit}
-        values={this.state}
-      />
-    );
-  }
+  const onSubmit = e => {
+    e.preventDefault();
+    createAccountAction(state);
+  };
+
+  return <CreateAccountForm onChange={onChange} onSubmit={onSubmit} feedback={feedback} values={state} />;
 }
 
 const mapStateToProps = ({ users }) => ({ users });

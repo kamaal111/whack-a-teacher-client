@@ -1,9 +1,9 @@
 import { ALL_LOBBIES } from '../actions';
 
-export default (state = { lobbies: [] }, { type, payload }) => {
-  switch (type) {
+export default (state = [], action = {} ) => {
+  switch (action.type) {
     case ALL_LOBBIES:
-      return { ...state, lobbies: payload };
+      return action.payload;
 
     default:
       return state;
