@@ -13,9 +13,8 @@ function CreateAccountFormContainer({
   const [feedback, setFeedback] = useState('')
 
   useEffect(() => {
-    console.log(55)
     if (users.status === 'OK') {
-      console.log(5)
+      setFeedback('')
       history.push('/lobby');
     } else if (users.status === 'BAD REQUEST') {
       setFeedback('Username already taken. Please choose a different one.')
@@ -30,13 +29,12 @@ function CreateAccountFormContainer({
   const onSubmit = e => {
     e.preventDefault();
     const validated = validateInput(state.name, state.password, setFeedback)
-    console.log(validated)
     if (validated) {
       createAccountAction(state);
     }
   };
 
-  return <CreateAccountForm onChange={onChange} feedback={feedback} onSubmit={onSubmit} values={state} />;
+  return <CreateAccountForm onChange={onChange} onSubmit={onSubmit} feedback={feedback} values={state} />;
 }
 
 const mapStateToProps = ({ users }) => ({ users });

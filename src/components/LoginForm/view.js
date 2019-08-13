@@ -12,6 +12,7 @@ export default function LoginForm(props) {
         <input type='password' name='password' onChange={props.onChange} value={props.values.password}></input>
         <button type='submit'>Log in</button>
       </form>
+      <p className='form-feedback'>{props.feedback}</p>
       <p>Don't have an account yet? <Link to='/'>Sign up here</Link></p>
     </div>
   )
