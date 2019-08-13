@@ -1,9 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 export default class CreateGameInterfaceContainer extends React.Component {
   render() {
-    return(
-      <p>Create a game</p>
-    )
+    return <p>Create a game</p>;
   }
 }
