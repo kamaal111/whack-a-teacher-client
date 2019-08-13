@@ -10,10 +10,14 @@ class LobbyListContainer extends Component {
         lobbies={this.props.lobbies}
       />
     );
+  };
+
+  render() {
+    return this.renderLobbyList();
   }
 }
 
-const mapStateToProps = ({ lobbies }) => ({ lobbies });
+const mapStateToProps = ({ lobbies, users }) => ({ lobbies, users });
 
 export default connect(
   mapStateToProps,
