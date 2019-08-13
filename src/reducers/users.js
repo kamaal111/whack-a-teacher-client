@@ -1,9 +1,9 @@
-import { USE_USER, AUTHERIZE_USER } from '../actions';
+import { USE_USER, AUTHORIZE_USER } from '../actions';
 
 const initialState = {
   activeUser: null,
   status: 'NOT SIGNED',
-  autherized: false
+  authorized: false
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -13,11 +13,11 @@ export default (state = initialState, { type, payload }) => {
         ...state,
         activeUser: payload.user,
         status: payload.status,
-        autherized: true
+        authorized: true
       };
 
-    case AUTHERIZE_USER:
-      return { ...state, autherized: payload };
+    case AUTHORIZE_USER:
+      return { ...state, authorized: payload };
 
     default:
       return state;
