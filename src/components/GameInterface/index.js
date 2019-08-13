@@ -1,30 +1,55 @@
 import React from 'react'
 import './GameInterface.css'
+import GameStatistics from '../GameStatistics'
 
 export default class GameInterfaceContainer extends React.Component {
-  renderBattlefield = () => {
-    const battlefield = <div id='battlefield'>{generateMole()}</div>
-    return battlefield
+  state = { 
+    moleCount: 0,
+    moles: [],
+    score: 0 
+  }
+
+  componentDidMount () {
+    setInterval(() => {
+      for (let i = 0; i < 1; i++) {
+        this.setState({ 
+          moleCount: this.state.moleCount + 1, 
+          moles: [...this.state.moles, this.renderMole()] 
+        })
+      }
+    }, 1000)
+  }
+
+  renderMole = () => {
+    const randomHeight = Math.min(Math.floor(Math.random() * 80), 70)
+    const randomWidth = Math.min(Math.floor(Math.random() * 60), 54.5)
+
+    const moleStyle= {
+      top: `${randomHeight}vh`,
+      left: `${randomWidth}vw`
+    }
+
+    const mole = <div 
+      style={moleStyle} 
+      className='mole'>
+      </div>
+    return mole
   }
   
   render() {
-    return(
-      <div>
-        {this.renderBattlefield()}
+    const moles = this.state.moles
+    if (this.state.moleCount > 3) {
+      moles.shift()
+    }
+
+    return (
+      <div id='game-interface'>
+        <div className='statistics'><GameStatistics player='Nicola' score={this.state.score}/></div>
+        <div id='battlefield'>
+          {moles}
+        </div>
+        <div className='statistics'><GameStatistics/></div>
       </div>
     )
   }
-}
-
-const generateMole = () => {
-  const randomHeight = Math.max(Math.floor(Math.random() * 550), 0)
-  const randomWidth = Math.max(Math.floor(Math.random() * 550), 0)
-
-  const moleStyle= {
-    top: `${randomHeight}px`,
-    left: `${randomWidth}px`
-  }
-
-  const mole = <div style={moleStyle} className='mole'></div>
-  return mole
 }

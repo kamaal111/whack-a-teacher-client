@@ -1,10 +1,16 @@
-import { USER_CREATED } from '../actions'
+import { USER_CREATED } from '../actions';
 
-export default function (state = [], action = {}) {
-  switch(action.type) {
+const initialState = {
+  activeUser: null,
+  status: 'NOT SIGNED'
+};
+
+export default (state = initialState, { type, payload }) => {
+  switch (type) {
     case USER_CREATED:
-      return action.payload
+      return { ...state, activeUser: payload.user, status: payload.status };
+
     default:
-      return state
+      return state;
   }
-}
+};
