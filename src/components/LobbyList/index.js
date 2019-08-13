@@ -6,6 +6,8 @@ import LobbyList from './view';
 import { createLobbyAuthorization } from '../../actions';
 
 class LobbyListContainer extends Component {
+  state = { lobbyName: '' };
+
   componentDidMount() {
     // if (this.props.users.activeUser === null) {
     //   return this.props.history.push('/login');
@@ -16,8 +18,29 @@ class LobbyListContainer extends Component {
     // }
   }
 
+  submitLobby = e => {
+    e.preventDefault();
+
+    this.props.createLobbyAuthorization(
+      this.state.lobbyName,
+      this.props.users.activeUser.id
+    );
+    this.setState({ lobbyName: '' });
+  };
+
+  onchangeLobbyName = e => {
+    this.setState({ lobbyName: e.target.value });
+  };
+
   render() {
-    return <LobbyList lobbies={this.props.lobbies} />;
+    return (
+      <LobbyList
+        lobbies={this.props.lobbies}
+        submitLobby={this.submitLobby}
+        onchangeLobbyName={this.onchangeLobbyName}
+        lobbyName={this.state.lobbyName}
+      />
+    );
   }
 }
 
