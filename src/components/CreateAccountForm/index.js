@@ -10,28 +10,33 @@ function CreateAccountFormContainer({
 }) {
   const [state, setState] = useState({ name: '', password: '' });
   const [status, setStatus] = useState(users.status);
+  const [feedback, setFeedback] = useState('')
 
   useEffect(() => {
-    if (status === 'OK') {
+    console.log(55)
+    if (users.status === 'OK') {
+      console.log(5)
       history.push('/lobby');
+    } else if (users.status === 'BAD REQUEST') {
+      setFeedback('Username already taken. Please choose a different one.')
     }
-  }, [status]);
-
-  useEffect(() => {
-    setStatus(users.status);
   }, [users.status]);
+
 
   const onChange = e => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
 
-  const onSubmit = async e => {
+  const onSubmit = e => {
     e.preventDefault();
-
-    createAccountAction(state);
+    const validated = validateInput(state.name, state.password, setFeedback)
+    console.log(validated)
+    if (validated) {
+      createAccountAction(state);
+    }
   };
 
-  return <CreateAccountForm onChange={onChange} onSubmit={onSubmit} values={state} />;
+  return <CreateAccountForm onChange={onChange} feedback={feedback} onSubmit={onSubmit} values={state} />;
 }
 
 const mapStateToProps = ({ users }) => ({ users });
@@ -40,3 +45,15 @@ export default connect(
   mapStateToProps,
   { createAccount }
 )(CreateAccountFormContainer);
+
+const validateInput = (name, password, setFeedback) => {
+  if (name.length < 4) {
+    setFeedback('Username too short. Must be a minimum of 4 characters.')
+    return false
+  } else if (password.length < 8) {
+    setFeedback('Password too short. Must be a minimum of 8 characters.')
+    return false
+  } else {
+    return true
+  }
+}

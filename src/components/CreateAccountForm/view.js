@@ -12,6 +12,7 @@ export default function CreateAccountForm(props) {
         <input type='password' required name='password' onChange={props.onChange} value={props.values.password}></input>
         <button type='submit'>Create account</button>
       </form>
+      <p className='form-feedback'>{props.feedback}</p>
       <p>Already have an account? <Link to='/login'>Login here</Link></p>
     </div>
   )
