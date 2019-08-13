@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import './App.css';
-
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -11,6 +9,8 @@ import CreateGameInterfaceContainer from './components/CreateGameInterface';
 import GameInterfaceContainer from './components/GameInterface';
 
 import { allLobbies } from './actions';
+
+import './App.css';
 
 class App extends Component {
   source = new EventSource(
@@ -26,21 +26,19 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Route
-          path="/"
-          exact
-          render={props => (
-            <CreateAccountFormContainer {...props} user={{ name: 'rein' }} />
-          )}
-        />
-        <Route path="/lobby" component={LobbyList} />
+        <Route path="/" exact component={CreateAccountFormContainer} />
         <Route path="/login" exact component={LoginFormContainer} />
         <Route
           path="/create-game"
           exact
           component={CreateGameInterfaceContainer}
         />
-        <Route path="/game/:gameId" exact component={GameInterfaceContainer} />
+        <Route path="/lobby" render={props => <LobbyList {...props} />} />
+        <Route
+          path="/game/:gameId"
+          exact
+          render={props => <GameInterfaceContainer {...props} />}
+        />
       </div>
     );
   }
