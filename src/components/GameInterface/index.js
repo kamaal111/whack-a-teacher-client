@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import GameStatistics from '../GameStatistics';
 
 import './GameInterface.css';
-import { autherizeUser } from '../../actions';
+import { authorizeUser } from '../../actions';
 
 class GameInterfaceContainer extends React.Component {
   state = {
@@ -24,7 +24,7 @@ class GameInterfaceContainer extends React.Component {
     }
 
     if (this.props.users.activeUser !== null) {
-      this.props.autherizeUser(
+      this.props.authorizeUser(
         this.props.users.activeUser.token,
         this.props.users.activeUser.id,
         this.props.match.params.gameId
@@ -99,7 +99,7 @@ class GameInterfaceContainer extends React.Component {
   render() {
     const moles = this.state.moles;
     console.log(moles);
-    if (this.state.moleCount > 3) {
+    if (this.state.moleCount > 15) {
       moles.shift();
     }
 
@@ -122,5 +122,5 @@ const mapStateToProps = ({ users }) => ({ users });
 
 export default connect(
   mapStateToProps,
-  { autherizeUser }
+  { authorizeUser }
 )(GameInterfaceContainer);
