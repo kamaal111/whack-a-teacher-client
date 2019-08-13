@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import CreateAccountFormContainer from './components/CreateAccountForm';
 import LobbyListContainer from './components/LobbyList';
 import LoginFormContainer from './components/LoginForm';
-import CreateGameInterfaceContainer from './components/CreateGameInterface';
 import GameInterfaceContainer from './components/GameInterface';
 
 import { allLobbies } from './actions';
@@ -29,11 +28,6 @@ class App extends Component {
       <div>
         <Route path="/" exact component={CreateAccountFormContainer} />
         <Route path="/login" exact component={LoginFormContainer} />
-        <Route
-          path="/create-game"
-          exact
-          component={CreateGameInterfaceContainer}
-        />
         <Route
           path="/lobby"
           render={props => <LobbyListContainer {...props} />}
