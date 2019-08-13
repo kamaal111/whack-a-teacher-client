@@ -28,10 +28,7 @@ function CreateAccountFormContainer({
 
   const onSubmit = e => {
     e.preventDefault();
-    const validated = validateInput(state.name, state.password, setFeedback)
-    if (validated) {
-      createAccountAction(state);
-    }
+    createAccountAction(state);
   };
 
   return <CreateAccountForm onChange={onChange} onSubmit={onSubmit} feedback={feedback} values={state} />;
@@ -43,15 +40,3 @@ export default connect(
   mapStateToProps,
   { createAccount }
 )(CreateAccountFormContainer);
-
-const validateInput = (name, password, setFeedback) => {
-  if (name.length < 4) {
-    setFeedback('Username too short. Must be a minimum of 4 characters.')
-    return false
-  } else if (password.length < 8) {
-    setFeedback('Password too short. Must be a minimum of 8 characters.')
-    return false
-  } else {
-    return true
-  }
-}
