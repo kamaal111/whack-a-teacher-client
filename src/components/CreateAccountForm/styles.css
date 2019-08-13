@@ -40,6 +40,9 @@ button {
   padding: .5rem 1rem;
   border-radius: 10px;
 }
+button:active, button:focus {
+  outline: none;
+}
 button:hover {
   cursor: pointer;
   background-color: rgb(39, 2, 39);
@@ -47,6 +50,8 @@ button:hover {
 }
 .form-feedback {
   margin: 1rem auto;
+  font-style: italic;
+  color: red;
 }
 a {
   text-decoration: none;

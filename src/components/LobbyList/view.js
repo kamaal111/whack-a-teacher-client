@@ -37,9 +37,8 @@ export default function LobbyList(props) {
             </tbody>
           </table>
         </div>
-        {props.lobbies.reduce((total, current, array) => {
-          console.log(current.users.length, total)
-          if (array === props.lobbies.length - 1) {
+        {props.lobbies.reduce((total, current, index) => {
+          if (index === props.lobbies.length - 1) {
             return <p>{total} players online</p>
           }
           return total + current.users.length
@@ -47,7 +46,7 @@ export default function LobbyList(props) {
       </div>
 
       <div id="create-lobby-container">
-        <p>Create lobby</p>
+        <h2>Create lobby</h2>
         <div id="create-lobby-form">
           <div className="form-container">
             <form onSubmit={props.submitLobby}>
