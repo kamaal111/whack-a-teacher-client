@@ -9,7 +9,6 @@ function CreateAccountFormContainer({
   users
 }) {
   const [state, setState] = useState({ name: '', password: '' });
-  const [status, setStatus] = useState(users.status);
   const [feedback, setFeedback] = useState('')
 
   useEffect(() => {
@@ -19,7 +18,7 @@ function CreateAccountFormContainer({
     } else if (users.status === 'BAD REQUEST') {
       setFeedback('Username already taken. Please choose a different one.')
     }
-  }, [users.status]);
+  }, [history, users.status]);
 
 
   const onChange = e => {

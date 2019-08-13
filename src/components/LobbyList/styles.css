@@ -1,0 +1,38 @@
+#lobby-list-container {
+  padding-top: 10vh;
+}
+#lobby-container {
+  background-color: rgb(237, 255, 233);
+  width: 60vw;
+  float: left;
+  height: 70vh;
+  border-right: 20px solid rgb(39, 2, 39);
+  box-sizing: border-box;
+}
+#create-lobby-container {
+  width: 40vw;
+  float: right;
+  height: 70vh;
+  background-color: rgb(237, 255, 233);
+}
+#lobby-list {
+  height: 80%;
+  background-color: rgb(237, 255, 233);
+  padding: 1rem;
+}
+#table-container {
+  height: 80%;
+}
+table {
+  width: 100%;
+  padding-top: 1rem;
+}
+table th {
+  width: 33.3%;
+  background-color: rgb(39, 2, 39);
+  color: rgb(237, 255, 233);
+  line-height: 6vh;
+}
+table td {
+  padding: .3rem;
+}

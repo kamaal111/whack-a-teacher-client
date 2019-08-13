@@ -3,7 +3,7 @@ import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import CreateAccountFormContainer from './components/CreateAccountForm';
-import LobbyList from './components/LobbyList';
+import LobbyListContainer from './components/LobbyList';
 import LoginFormContainer from './components/LoginForm';
 import CreateGameInterfaceContainer from './components/CreateGameInterface';
 import GameInterfaceContainer from './components/GameInterface';
@@ -14,7 +14,8 @@ import './App.css';
 
 class App extends Component {
   source = new EventSource(
-    `https://morning-caverns-95025.herokuapp.com/stream`
+    // `https://morning-caverns-95025.herokuapp.com/stream`
+    'http://localhost:4000/stream'
   );
 
   componentDidMount() {
@@ -33,7 +34,7 @@ class App extends Component {
           exact
           component={CreateGameInterfaceContainer}
         />
-        <Route path="/lobby" render={props => <LobbyList {...props} />} />
+        <Route path="/lobby" render={props => <LobbyListContainer {...props} />} />
         <Route
           path="/game/:gameId"
           exact

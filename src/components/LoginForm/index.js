@@ -9,7 +9,6 @@ function LoginFormContainer({
   users
 }) {
   const [state, setState] = useState({ name: '', password: '' });
-  const [status, setStatus] = useState(users.status);
   const [feedback, setFeedback] = useState('')
 
   useEffect(() => {
@@ -19,7 +18,7 @@ function LoginFormContainer({
     } else if (users.status === 'BAD REQUEST') {
       setFeedback('Username and password combination incorrect. Please try again.')
     }
-  }, [users.status]);
+  }, [history, users.status]);
 
   const onChange = e => {
     setState({ ...state, [e.target.name]: e.target.value });
