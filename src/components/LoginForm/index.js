@@ -1,37 +1,42 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import { createAccount } from '../../actions'
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { loginInAccount } from '../../actions';
 import LoginForm from './view';
 
-class LoginFormContainer extends React.Component {
-  state = {
-    name: '',
-    password: ''
-  }
+function LoginFormContainer({
+  loginInAccount: loginInAccountAction,
+  history,
+  users
+}) {
+  const [state, setState] = useState({ name: '', password: '' });
+  const [status, setStatus] = useState(users.status);
 
-  onChange = e => {
-    this.setState({
-      [e.target.name]: e.target.value
-    })
-  }
+  useEffect(() => {
+    if (status === 'OK') {
+      history.push('/lobby');
+    }
+  }, [status]);
 
-  onSubmit = e => {
-    e.preventDefault()
-    // this.props.createAccount(this.state)
-    this.props.history.push('/lobby')
-    this.setState({
-      name: '',
-      password: ''
-    })
-  }
+  useEffect(() => {
+    setStatus(users.status);
+  }, [users.status]);
 
-  render() {
-    return(<LoginForm
-      onChange={this.onChange}
-      onSubmit={this.onSubmit}
-      values={this.state}
-    />)
-  }
+  const onChange = e => {
+    setState({ ...state, [e.target.name]: e.target.value });
+  };
+
+  const onSubmit = async e => {
+    e.preventDefault();
+
+    loginInAccountAction(state);
+  };
+
+  return <LoginForm onChange={onChange} onSubmit={onSubmit} values={state} />;
 }
 
-export default connect(null, { createAccount })(LoginFormContainer)
+const mapStateToProps = ({ users }) => ({ users });
+
+export default connect(
+  mapStateToProps,
+  { loginInAccount }
+)(LoginFormContainer);
