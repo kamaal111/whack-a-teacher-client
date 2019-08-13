@@ -10,10 +10,6 @@ class LobbyListContainer extends Component {
         lobbies={this.props.lobbies}
       />
     );
-  };
-
-  render() {
-    return this.renderLobbyList();
   }
 }
 
