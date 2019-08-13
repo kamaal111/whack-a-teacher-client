@@ -1,10 +1,10 @@
 #game-interface {
   margin: 10vh auto;
-  height: 60vh;;
+  height: 80vh;
 }
 #battlefield {
-  width: 60vw;
-  height: 80vh;
+  width: 60%;
+  height: 100%;
   background-color: rgb(206, 229, 255);
   position: relative;
   float: left;
@@ -19,8 +19,8 @@
 }
 .statistics {
   float: left;
-  width: 20vw;
-  height: 80vh;
+  width: 20%;
+  height: 100%;
 }
 div.statistics:nth-child(1) {
   background-color: red;
