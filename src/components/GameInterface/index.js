@@ -48,6 +48,8 @@ class GameInterfaceContainer extends React.Component {
   };
 
   whackMole = e => {
+    const audio = new Audio('http://wohlsoft.ru/docs/Sounds/SMBX_OPL/SMBX_OPL_Sounds_src/WAV/sm-boss-hit.wav');
+    audio.play()
     const mole = document.getElementById(`${e.target.id}`);
     mole.style.display = 'none';
     this.setState({ score: this.state.score + 1 });
@@ -176,7 +178,7 @@ class GameInterfaceContainer extends React.Component {
       return (
         <div id="game-interface">
           <div className="statistics">
-            <GameStatistics player="Nicola" score={this.state.score} />
+            <GameStatistics player={this.props.users.activeUser.name} score={this.state.score} />
           </div>
           <div id="battlefield">{moles}</div>
           <div className="statistics">
