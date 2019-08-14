@@ -74,7 +74,7 @@ class GameInterfaceContainer extends React.Component {
     return mole;
   };
 
-  handleGameStop = async () => {
+  handleGameStop = () => {
     clearInterval(this.state.intervalId);
     const moles = document.getElementsByClassName('mole');
     const molesArray = Array.from(moles);
@@ -84,31 +84,83 @@ class GameInterfaceContainer extends React.Component {
       });
     }, 1000);
 
-    // await request
-    //   .put(
-    //     `${url}/game/${this.props.match.params.gameId}/score/${
-    //       this.users.activeUser.id
-    //     }`
-    //   )
-    //   .send({ score: this.state.score });
+    const foundLobby = this.props.lobbies.find(
+      lobby => lobby.id === Number(this.props.match.params.gameId)
+    );
+
+    const findPlayerIndex = foundLobby.users.findIndex(
+      element => this.props.users.activeUser.id === element.id
+    );
+
+    console.log('findPlayerIndex', findPlayerIndex);
+
+    return request
+      .put(
+        `${url}/game/${this.props.match.params.gameId}/score/${findPlayerIndex +
+          1}`
+      )
+      .send({ score: this.state.score });
   };
 
-  render() {
-    const moles = this.state.moles;
+  renderGame = () => {
+    const { moles } = this.state;
     console.log(moles);
     if (this.state.moleCount > 15) {
       moles.shift();
     }
 
+    const foundLobby = this.props.lobbies.find(
+      lobby => lobby.id === Number(this.props.match.params.gameId)
+    );
+
+    const calculateWinner = () => {
+      console.log('foundLobby.users', foundLobby.users);
+      console.log('this.props.users.activeUser', this.props.users.activeUser);
+      const findPlayerIndex = foundLobby.users.findIndex(
+        element => this.props.users.activeUser.id === element.id
+      );
+
+      console.log('findPlayerIndex', findPlayerIndex);
+
+      if (findPlayerIndex === 0) {
+        return foundLobby.playerOneScore > foundLobby.playerTwoScore;
+      }
+
+      return foundLobby.playerTwoScore > foundLobby.playerOneScore;
+    };
+
+    if (foundLobby.users.length === 2) {
+      console.log('foundLobby.playerOneScore', foundLobby.playerOneScore);
+      console.log('foundLobby.playerTwoScore', foundLobby.playerTwoScore);
+      if (
+        foundLobby.playerOneScore !== null &&
+        foundLobby.playerTwoScore !== null
+      ) {
+        if (calculateWinner() === false) {
+          return <h1>LOSER</h1>;
+        }
+
+        return <h1>WINNER</h1>;
+      }
+
+      return (
+        <div id="game-interface">
+          <div className="statistics">
+            <GameStatistics player="Nicola" score={this.state.score} />
+          </div>
+          <div id="battlefield">{moles}</div>
+          <div className="statistics">
+            <GameStatistics />
+          </div>
+        </div>
+      );
+    }
+  };
+
+  render() {
     return (
-      <div id="game-interface">
-        <div className="statistics">
-          <GameStatistics player="Nicola" score={this.state.score} />
-        </div>
-        <div id="battlefield">{moles}</div>
-        <div className="statistics">
-          <GameStatistics />
-        </div>
+      <div>
+        {this.renderGame()}
         <button onClick={this.handleGameStop}>Stop game</button>
         <button
           onClick={() => {
@@ -117,6 +169,19 @@ class GameInterfaceContainer extends React.Component {
           }}
         >
           START
+        </button>
+        <button
+          onClick={() => {
+            authorizeUser(
+              this.props.users.activeUser.token,
+              this.props.users.activeUser.id,
+              null
+            );
+
+            this.props.history.push('/lobby');
+          }}
+        >
+          LEAVE LOBBY
         </button>
       </div>
     );
