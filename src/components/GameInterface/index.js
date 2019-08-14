@@ -97,6 +97,13 @@ class GameInterfaceContainer extends React.Component {
       )
       .send({ score: this.state.score });
 
+    this.setState({
+      moleCount: 0,
+      moles: [],
+      score: 0,
+      intervalId: 0
+    });
+
     console.log('res', res);
   };
 
@@ -120,7 +127,19 @@ class GameInterfaceContainer extends React.Component {
         return foundLobby.playerOneScore > foundLobby.playerTwoScore;
       }
 
+      if (foundLobby.playerOneScore === foundLobby.playerTwoScore) {
+        return 0;
+      }
+
       return foundLobby.playerTwoScore > foundLobby.playerOneScore;
+    };
+
+    const handleRematch = async () => {
+      const res = await request.put(
+        `${url}/game/${this.props.match.params.gameId}/rematch`
+      );
+
+      console.log('res', res);
     };
 
     if (foundLobby.users.length === 2) {
@@ -129,10 +148,29 @@ class GameInterfaceContainer extends React.Component {
         foundLobby.playerTwoScore !== null
       ) {
         if (calculateWinner() === false) {
-          return <h1>LOSER</h1>;
+          return (
+            <div>
+              <h1>LOSER</h1>
+              <button onClick={() => handleRematch()}>REMATCH</button>
+            </div>
+          );
         }
 
-        return <h1>WINNER</h1>;
+        if (calculateWinner() === 0) {
+          return (
+            <div>
+              <h1>DRAW</h1>
+              <button onClick={() => handleRematch()}>REMATCH</button>
+            </div>
+          );
+        }
+
+        return (
+          <div>
+            <h1>WINNER</h1>
+            <button onClick={() => handleRematch()}>REMATCH</button>
+          </div>
+        );
       }
 
       return (
