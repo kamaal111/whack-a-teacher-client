@@ -10,9 +10,9 @@ export default function LoginForm(props) {
         <form onSubmit={props.onSubmit}>
           <h2>Log in</h2>
           <label>Username:
-          <input type='text' name='name' onChange={props.onChange} value={props.values.username}></input></label>
+          <input type='text' name='name' required onChange={props.onChange} value={props.values.username}></input></label>
           <label>Password:
-          <input type='password' name='password' onChange={props.onChange} value={props.values.password}></input></label>
+          <input type='password' name='password' required onChange={props.onChange} value={props.values.password}></input></label>
           <button type='submit'>Log in</button>
         </form>
         <p className='form-feedback'>{props.feedback}</p>
