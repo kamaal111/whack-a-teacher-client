@@ -29,6 +29,9 @@ function LoginFormContainer({
       setFeedback(
         'Username and password combination incorrect. Please try again.'
       );
+      setTimeout(() => {
+        setFeedback(' ')
+      }, 1500)
     }
   }, [history, users.status]);
 
