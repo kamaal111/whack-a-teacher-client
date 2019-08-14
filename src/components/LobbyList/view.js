@@ -4,10 +4,13 @@ import './styles.css';
 
 export default function LobbyList(props) {
   const playersOnline = props.lobbies.reduce((total, current, index) => {
-    if (index === props.lobbies.length - 1) {
-      return <p>{total} players online</p>
-    }
+    // no lobbies
+    if (props.lobbies.length === 0) {
+      console.log(props.lobbies)
+      return false
+    } else {
     return total + current.users.length
+    }
   }, 0)
 
   return (
@@ -19,7 +22,7 @@ export default function LobbyList(props) {
           <table>
             <thead>
               <tr>
-                <th>Lobby</th>
+                <th>Name</th>
                 <th>Players</th>
                 <th />
               </tr>
@@ -44,13 +47,13 @@ export default function LobbyList(props) {
             </tbody>
           </table>
         </div>
-        {playersOnline ? {playersOnline} : <p>0 players online</p>}
+        {playersOnline ? <p>{playersOnline} players online</p> : <p>0 players online</p>}
       </div>
 
       <div id="create-lobby-container">
         <h2>Create lobby</h2>
         <div id="create-lobby-form">
-          <div className="form-container">
+          <div className="form-container create-lobby-form-container">
             <form onSubmit={props.submitLobby}>
               <label>
                 Name:

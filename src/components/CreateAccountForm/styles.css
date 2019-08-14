@@ -18,8 +18,8 @@ span {
 }
 .form-container {
   background-color: rgb(237, 255, 233);
-  width: 40vw;
   margin: 0 auto;
+  width: 40vw;
   padding: 1rem 2rem;
   border-radius: 5px;
 }

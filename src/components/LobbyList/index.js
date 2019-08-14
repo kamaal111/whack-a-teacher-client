@@ -12,7 +12,6 @@ class LobbyListContainer extends Component {
     // if (this.props.users.activeUser === null) {
     //   return this.props.history.push('/login');
     // }
-
     // if (this.props.users.activeUser.autherized === false) {
     //   return this.props.history.push('/login');
     // }
@@ -23,7 +22,7 @@ class LobbyListContainer extends Component {
 
     this.props.createLobbyAuthorization(
       this.state.lobbyName,
-      this.props.users.activeUser.id
+      this.props.users.activeUser.token
     );
     this.setState({ lobbyName: '' });
   };
