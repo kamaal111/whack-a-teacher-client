@@ -3,8 +3,7 @@ import { USE_USER, AUTHORIZE_USER } from '../actions';
 const initialState = {
   activeUser: null,
   status: 'NOT SIGNED',
-  authorized: false,
-  player: null
+  authorized: false
 };
 
 export default (state = initialState, { type, payload }) => {

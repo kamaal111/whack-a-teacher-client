@@ -36,26 +36,7 @@ class GameInterfaceContainer extends React.Component {
         this.props.match.params.gameId
       );
     }
-
-    const intervalId = setInterval(this.launchTimer, 1000);
-    this.setState({ intervalId: intervalId });
   }
-
-  componentWillUnmount = () => {
-    clearInterval(this.state.intervalId);
-    const moles = document.getElementsByClassName('mole');
-    const molesArray = Array.from(moles);
-    setTimeout(() => {
-      molesArray.forEach(mole => {
-        mole.style.display = 'none';
-      });
-    }, 1000);
-  };
-
-  // generateMoles = () => {
-  //   console.log(this.state.intervalId)
-  //   clearInterval(this.state.intervalId)
-  // }
 
   launchTimer = () => {
     for (let i = 0; i < 1; i++) {
@@ -94,11 +75,22 @@ class GameInterfaceContainer extends React.Component {
   };
 
   handleGameStop = async () => {
-    this.componentWillUnmount();
+    clearInterval(this.state.intervalId);
+    const moles = document.getElementsByClassName('mole');
+    const molesArray = Array.from(moles);
+    setTimeout(() => {
+      molesArray.forEach(mole => {
+        mole.style.display = 'none';
+      });
+    }, 1000);
 
-    // await request.put(
-    //   `${url}/game/${this.props.match.params.gameId}/score/${this.state}` // playerId
-    // );
+    // await request
+    //   .put(
+    //     `${url}/game/${this.props.match.params.gameId}/score/${
+    //       this.users.activeUser.id
+    //     }`
+    //   )
+    //   .send({ score: this.state.score });
   };
 
   render() {
@@ -118,12 +110,20 @@ class GameInterfaceContainer extends React.Component {
           <GameStatistics />
         </div>
         <button onClick={this.handleGameStop}>Stop game</button>
+        <button
+          onClick={() => {
+            const intervalId = setInterval(this.launchTimer, 1000);
+            this.setState({ intervalId: intervalId });
+          }}
+        >
+          START
+        </button>
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ users }) => ({ users });
+const mapStateToProps = ({ users, lobbies }) => ({ users, lobbies });
 
 export default connect(
   mapStateToProps,
