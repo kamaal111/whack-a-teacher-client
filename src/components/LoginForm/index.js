@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { loginInAccount } from '../../actions';
 import LoginForm from './view';
-import './loader.css'
+import './loader.css';
 
 function LoginFormContainer({
   loginInAccount: loginInAccountAction,
@@ -17,6 +17,7 @@ function LoginFormContainer({
       setFeedback(' ')
       history.push('/lobby')
     }
+    
     else if (state.name === '' && state.password === '') {
       setFeedback(' ')
     } else if (users.status === 'OK' && feedback === ' ') {
