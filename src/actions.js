@@ -1,7 +1,6 @@
 import * as request from 'superagent';
 
-// const baseUrl = 'https://morning-caverns-95025.herokuapp.com';
-const baseUrl = 'http://localhost:4000';
+import baseUrl from './urls';
 
 export const USE_USER = 'USE_USER';
 export const AUTHORIZE_USER = 'AUTHORIZE_USER';
