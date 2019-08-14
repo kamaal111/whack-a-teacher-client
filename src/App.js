@@ -9,17 +9,16 @@ import GameInterfaceContainer from './components/GameInterface';
 
 import { allLobbies } from './actions';
 
+import url from './urls';
+
 import './App.css';
 
 class App extends Component {
-  source = new EventSource(
-    // `https://morning-caverns-95025.herokuapp.com/stream`
-    'http://localhost:4000/stream'
-  );
+  source = new EventSource(`${url}/stream`);
 
   componentDidMount() {
     this.source.onmessage = event => {
-      console.log('Data:', JSON.parse(event.data))
+      console.log('Data:', JSON.parse(event.data));
       this.props.allLobbies(JSON.parse(event.data));
     };
   }

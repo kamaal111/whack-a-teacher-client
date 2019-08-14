@@ -1,10 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import * as request from 'superagent';
 
 import GameStatistics from '../GameStatistics';
 
 import './GameInterface.css';
 import { authorizeUser } from '../../actions';
+
+import url from '../../urls';
 
 class GameInterfaceContainer extends React.Component {
   state = {
@@ -19,7 +22,10 @@ class GameInterfaceContainer extends React.Component {
       return this.props.history.push('/login');
     }
 
-    if (this.props.users.activeUser.autherized === false) {
+    if (
+      this.props.users.activeUser === null &&
+      this.props.users.activeUser.authorized === false
+    ) {
       return this.props.history.push('/login');
     }
 
@@ -30,15 +36,6 @@ class GameInterfaceContainer extends React.Component {
         this.props.match.params.gameId
       );
     }
-
-    // setInterval(() => {
-    //   for (let i = 0; i < 1; i++) {
-    //     this.setState({
-    //       moleCount: this.state.moleCount + 1,
-    //       moles: [...this.state.moles, this.renderMole()]
-    //     })
-    //   }
-    // }, 1000)
 
     const intervalId = setInterval(this.launchTimer, 1000);
     this.setState({ intervalId: intervalId });
@@ -96,6 +93,14 @@ class GameInterfaceContainer extends React.Component {
     return mole;
   };
 
+  handleGameStop = async () => {
+    this.componentWillUnmount();
+
+    // await request.put(
+    //   `${url}/game/${this.props.match.params.gameId}/score/${this.state}` // playerId
+    // );
+  };
+
   render() {
     const moles = this.state.moles;
     console.log(moles);
@@ -112,7 +117,7 @@ class GameInterfaceContainer extends React.Component {
         <div className="statistics">
           <GameStatistics />
         </div>
-        <button onClick={this.componentWillUnmount}>Stop game</button>
+        <button onClick={this.handleGameStop}>Stop game</button>
       </div>
     );
   }

@@ -1,7 +1,6 @@
 import * as request from 'superagent';
 
-// const baseUrl = 'https://morning-caverns-95025.herokuapp.com';
-const baseUrl = 'http://localhost:4000';
+import baseUrl from './urls';
 
 export const USE_USER = 'USE_USER';
 export const AUTHORIZE_USER = 'AUTHORIZE_USER';
@@ -63,7 +62,7 @@ export const authorizeUser = (token, userId, lobbyId) => async dispatch => {
 
   console.log(res.body);
 
-  if (res.body.message === 'OK') {
+  if (res.body.data === 'OK') {
     return dispatch({
       type: AUTHORIZE_USER,
       payload: true
@@ -84,7 +83,7 @@ export const createLobbyAuthorization = (gameName, token) => async dispatch => {
 
   console.log(res.body);
 
-  if (res.body.message === 'OK') {
+  if (res.body.data === 'OK') {
     return dispatch({
       type: AUTHORIZE_USER,
       payload: true
