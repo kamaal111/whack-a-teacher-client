@@ -5,7 +5,7 @@ import '../CreateAccountForm/styles.css'
 export default function LoginForm(props) {
   return(
     <div id='login-form'>
-      <h1>Welcome to <span><img className='whack-image'></img>A Teacher!</span></h1>
+      <h1>Welcome to <span><img alt='whack!' className='whack-image'></img>A Teacher!</span></h1>
       <div className='form-container'>
         <form onSubmit={props.onSubmit}>
           <h2>Log in</h2>
