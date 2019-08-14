@@ -12,10 +12,11 @@ function CreateAccountFormContainer({
   const [feedback, setFeedback] = useState('')
 
   useEffect(() => {
+    setFeedback('')
     if (users.status === 'OK') {
       setFeedback('')
       history.push('/lobby');
-    } else if (users.status === 'BAD REQUEST') {
+    } else if (users.status === 'BAD REQUEST SIGN UP') {
       setFeedback('Username already taken. Please choose a different one.')
     }
   }, [history, users.status]);

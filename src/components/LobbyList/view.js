@@ -3,6 +3,13 @@ import { Link } from 'react-router-dom';
 import './styles.css';
 
 export default function LobbyList(props) {
+  const playersOnline = props.lobbies.reduce((total, current, index) => {
+    if (index === props.lobbies.length - 1) {
+      return <p>{total} players online</p>
+    }
+    return total + current.users.length
+  }, 0)
+
   return (
     <div id="lobby-list-container">
       <div id="lobby-container">
@@ -37,12 +44,7 @@ export default function LobbyList(props) {
             </tbody>
           </table>
         </div>
-        {props.lobbies.reduce((total, current, index) => {
-          if (index === props.lobbies.length - 1) {
-            return <p>{total} players online</p>
-          }
-          return total + current.users.length
-        }, 0)}
+        {playersOnline ? {playersOnline} : <p>0 players online</p>}
       </div>
 
       <div id="create-lobby-container">

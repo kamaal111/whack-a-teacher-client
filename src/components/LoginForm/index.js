@@ -25,7 +25,7 @@ function LoginFormContainer({
       setFeedback(
         ''
       )
-    } else if (users.status === 'BAD REQUEST') {
+    } else if (users.status === 'BAD REQUEST LOGIN') {
       setFeedback(
         'Username and password combination incorrect. Please try again.'
       );
