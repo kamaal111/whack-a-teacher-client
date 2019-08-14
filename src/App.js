@@ -5,21 +5,20 @@ import { connect } from 'react-redux';
 import CreateAccountFormContainer from './components/CreateAccountForm';
 import LobbyListContainer from './components/LobbyList';
 import LoginFormContainer from './components/LoginForm';
-import CreateGameInterfaceContainer from './components/CreateGameInterface';
 import GameInterfaceContainer from './components/GameInterface';
 
 import { allLobbies } from './actions';
 
+import url from './urls';
+
 import './App.css';
 
 class App extends Component {
-  source = new EventSource(
-    // `https://morning-caverns-95025.herokuapp.com/stream`
-    'http://localhost:4000/stream'
-  );
+  source = new EventSource(`${url}/stream`);
 
   componentDidMount() {
     this.source.onmessage = event => {
+      console.log('Data:', JSON.parse(event.data));
       this.props.allLobbies(JSON.parse(event.data));
     };
   }
@@ -30,11 +29,9 @@ class App extends Component {
         <Route path="/" exact component={CreateAccountFormContainer} />
         <Route path="/login" exact component={LoginFormContainer} />
         <Route
-          path="/create-game"
-          exact
-          component={CreateGameInterfaceContainer}
+          path="/lobby"
+          render={props => <LobbyListContainer {...props} />}
         />
-        <Route path="/lobby" render={props => <LobbyListContainer {...props} />} />
         <Route
           path="/game/:gameId"
           exact
@@ -45,7 +42,9 @@ class App extends Component {
   }
 }
 
+const mapStateToProps = ({ lobbies }) => ({ lobbies });
+
 export default connect(
-  null,
+  mapStateToProps,
   { allLobbies }
 )(App);

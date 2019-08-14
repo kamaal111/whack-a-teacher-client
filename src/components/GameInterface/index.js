@@ -1,10 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import * as request from 'superagent';
 
 import GameStatistics from '../GameStatistics';
 
 import './GameInterface.css';
-import { autherizeUser } from '../../actions';
+import { authorizeUser } from '../../actions';
+
+import url from '../../urls';
 
 class GameInterfaceContainer extends React.Component {
   state = {
@@ -19,46 +22,21 @@ class GameInterfaceContainer extends React.Component {
       return this.props.history.push('/login');
     }
 
-    if (this.props.users.activeUser.autherized === false) {
+    if (
+      this.props.users.activeUser === null &&
+      this.props.users.activeUser.authorized === false
+    ) {
       return this.props.history.push('/login');
     }
 
     if (this.props.users.activeUser !== null) {
-      this.props.autherizeUser(
+      this.props.authorizeUser(
         this.props.users.activeUser.token,
         this.props.users.activeUser.id,
         this.props.match.params.gameId
       );
     }
-
-    // setInterval(() => {
-    //   for (let i = 0; i < 1; i++) {
-    //     this.setState({
-    //       moleCount: this.state.moleCount + 1,
-    //       moles: [...this.state.moles, this.renderMole()]
-    //     })
-    //   }
-    // }, 1000)
-
-    const intervalId = setInterval(this.launchTimer, 1000);
-    this.setState({ intervalId: intervalId });
   }
-
-  componentWillUnmount = () => {
-    clearInterval(this.state.intervalId);
-    const moles = document.getElementsByClassName('mole');
-    const molesArray = Array.from(moles);
-    setTimeout(() => {
-      molesArray.forEach(mole => {
-        mole.style.display = 'none';
-      });
-    }, 1000);
-  };
-
-  // generateMoles = () => {
-  //   console.log(this.state.intervalId)
-  //   clearInterval(this.state.intervalId)
-  // }
 
   launchTimer = () => {
     for (let i = 0; i < 1; i++) {
@@ -70,6 +48,8 @@ class GameInterfaceContainer extends React.Component {
   };
 
   whackMole = e => {
+    const audio = new Audio('http://wohlsoft.ru/docs/Sounds/SMBX_OPL/SMBX_OPL_Sounds_src/WAV/sm-boss-hit.wav');
+    audio.play()
     const mole = document.getElementById(`${e.target.id}`);
     mole.style.display = 'none';
     this.setState({ score: this.state.score + 1 });
@@ -96,31 +76,153 @@ class GameInterfaceContainer extends React.Component {
     return mole;
   };
 
-  render() {
-    const moles = this.state.moles;
+  handleGameStop = async () => {
+    clearInterval(this.state.intervalId);
+    const moles = document.getElementsByClassName('mole');
+    const molesArray = Array.from(moles);
+    setTimeout(() => {
+      molesArray.forEach(mole => {
+        mole.style.display = 'none';
+      });
+    }, 1000);
+
+    const findPlayerIndex = this.props.lobbies
+      .find(lobby => lobby.id === Number(this.props.match.params.gameId))
+      .users.findIndex(
+        element => this.props.users.activeUser.id === element.id
+      );
+
+    const res = await request
+      .put(
+        `${url}/game/${this.props.match.params.gameId}/score/${findPlayerIndex +
+          1}`
+      )
+      .send({ score: this.state.score });
+
+    this.setState({
+      moleCount: 0,
+      moles: [],
+      score: 0,
+      intervalId: 0
+    });
+
+    console.log('res', res);
+  };
+
+  renderGame = () => {
+    const { moles } = this.state;
     console.log(moles);
-    if (this.state.moleCount > 3) {
+    if (this.state.moleCount > 15) {
       moles.shift();
     }
 
+    const foundLobby = this.props.lobbies.find(
+      lobby => lobby.id === Number(this.props.match.params.gameId)
+    );
+
+    const calculateWinner = () => {
+      const findPlayerIndex = foundLobby.users.findIndex(
+        element => this.props.users.activeUser.id === element.id
+      );
+
+      if (findPlayerIndex === 0) {
+        return foundLobby.playerOneScore > foundLobby.playerTwoScore;
+      }
+
+      if (foundLobby.playerOneScore === foundLobby.playerTwoScore) {
+        return 0;
+      }
+
+      return foundLobby.playerTwoScore > foundLobby.playerOneScore;
+    };
+
+    const handleRematch = async () => {
+      const res = await request.put(
+        `${url}/game/${this.props.match.params.gameId}/rematch`
+      );
+
+      console.log('res', res);
+    };
+
+    if (foundLobby.users.length === 2) {
+      if (
+        foundLobby.playerOneScore !== null &&
+        foundLobby.playerTwoScore !== null
+      ) {
+        if (calculateWinner() === false) {
+          return (
+            <div>
+              <h1>LOSER</h1>
+              <button onClick={() => handleRematch()}>REMATCH</button>
+            </div>
+          );
+        }
+
+        if (calculateWinner() === 0) {
+          return (
+            <div>
+              <h1>DRAW</h1>
+              <button onClick={() => handleRematch()}>REMATCH</button>
+            </div>
+          );
+        }
+
+        return (
+          <div>
+            <h1>WINNER</h1>
+            <button onClick={() => handleRematch()}>REMATCH</button>
+          </div>
+        );
+      }
+
+      return (
+        <div id="game-interface">
+          <div className="statistics">
+            <GameStatistics player={this.props.users.activeUser.name} score={this.state.score} />
+          </div>
+          <div id="battlefield">{moles}</div>
+          <div className="statistics">
+            <GameStatistics />
+          </div>
+        </div>
+      );
+    }
+  };
+
+  render() {
     return (
-      <div id="game-interface">
-        <div className="statistics">
-          <GameStatistics player="Nicola" score={this.state.score} />
-        </div>
-        <div id="battlefield">{moles}</div>
-        <div className="statistics">
-          <GameStatistics />
-        </div>
-        <button onClick={this.componentWillUnmount}>Stop game</button>
+      <div>
+        {this.renderGame()}
+        <button onClick={this.handleGameStop}>Stop game</button>
+        <button
+          onClick={() => {
+            const intervalId = setInterval(this.launchTimer, 1000);
+            this.setState({ intervalId: intervalId });
+          }}
+        >
+          START
+        </button>
+        <button
+          onClick={() => {
+            authorizeUser(
+              this.props.users.activeUser.token,
+              this.props.users.activeUser.id,
+              null
+            );
+
+            this.props.history.push('/lobby');
+          }}
+        >
+          LEAVE LOBBY
+        </button>
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ users }) => ({ users });
+const mapStateToProps = ({ users, lobbies }) => ({ users, lobbies });
 
 export default connect(
   mapStateToProps,
-  { autherizeUser }
+  { authorizeUser }
 )(GameInterfaceContainer);

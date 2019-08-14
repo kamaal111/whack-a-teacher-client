@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap');
 
 body {
-  background-color: rgb(80, 165, 11);
+  background-color: rgb(240, 169, 38);
   text-align: center;
 }
 * {
@@ -9,7 +9,5 @@ body {
   font-family: 'Nanum Gothic';
   margin: 0;
   padding: 0;
-}
-* {
   font-size: calc(2vh + .2rem);
 }

@@ -2,13 +2,13 @@ input {
   font-size: calc(2vh + .2rem);
 }
 h1, span {
-  font-size: calc(3vh + .3rem);
+  font-size: calc(3.5vh + .4rem);
 }
 h2 {
   font-size: calc(3vh + .2rem);
 }
 #create-account-form, #login-form {
-  margin-top: 20vh;
+  margin-top: 10vh;
 }
 h1 {
   margin-bottom: 5vh;
@@ -18,8 +18,8 @@ span {
 }
 .form-container {
   background-color: rgb(237, 255, 233);
-  width: 40vw;
   margin: 0 auto;
+  width: 40vw;
   padding: 1rem 2rem;
   border-radius: 5px;
 }
@@ -39,6 +39,10 @@ input:active, input:focus {
 button {
   padding: .5rem 1rem;
   border-radius: 10px;
+  border: 2px solid rgb(39, 2, 39);
+}
+button:active, button:focus {
+  outline: none;
 }
 button:hover {
   cursor: pointer;
@@ -47,8 +51,17 @@ button:hover {
 }
 .form-feedback {
   margin: 1rem auto;
+  font-style: italic;
+  color: red;
 }
 a {
   text-decoration: none;
   border-bottom: 1px solid rgb(39, 2, 39);
+}
+.whack-image {
+  content: url('../../images/whack.png');
+  border-radius: 50%;
+  vertical-align: middle;
+  transform: rotate(-5deg);
+  max-height: 150px;
 }

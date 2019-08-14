@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { loginInAccount } from '../../actions';
 import LoginForm from './view';
+import './loader.css'
 
 function LoginFormContainer({
   loginInAccount: loginInAccountAction,
@@ -12,10 +13,19 @@ function LoginFormContainer({
   const [feedback, setFeedback] = useState('');
 
   useEffect(() => {
-    if (users.status === 'OK') {
-      setFeedback('');
-      history.push('/lobby');
-    } else if (users.status === 'BAD REQUEST') {
+    if (users.status === 'OK' && feedback === '') {
+      setFeedback(' ')
+      history.push('/lobby')
+    }
+    else if (state.name === '' && state.password === '') {
+      setFeedback(' ')
+    } else if (users.status === 'OK' && feedback === ' ') {
+      setFeedback(<p className='loader-text'>Logging in...<span className='loader'></span></p>)
+      setTimeout(() => {
+        history.push('/lobby')
+      }, 1500)
+      
+    } else if (users.status === 'BAD REQUEST LOGIN') {
       setFeedback(
         'Username and password combination incorrect. Please try again.'
       );
@@ -28,7 +38,6 @@ function LoginFormContainer({
 
   const onSubmit = async e => {
     e.preventDefault();
-
     loginInAccountAction(state);
   };
 
