@@ -23,7 +23,7 @@ export default function LobbyList(props) {
               <tr>
                 <th>Name</th>
                 <th>Players</th>
-                <th />
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -50,8 +50,8 @@ export default function LobbyList(props) {
       </div>
 
       <div id="create-lobby-container">
-        <h2>Create lobby</h2>
         <div id="create-lobby-form">
+          <h2>Create lobby</h2>
           <div className="form-container create-lobby-form-container">
             <form onSubmit={props.submitLobby}>
               <label>

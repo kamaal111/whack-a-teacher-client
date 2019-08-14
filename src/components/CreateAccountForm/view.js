@@ -5,7 +5,7 @@ import './styles.css'
 export default function CreateAccountForm(props) {
   return(
     <div id='create-account-form'>
-      <h1>Welcome to <span>Whack A Teacher!</span></h1>
+      <h1>Welcome to <span><img class='whack-image'></img>A Teacher!</span></h1>
       <div className='form-container'>
         <form onSubmit={props.onSubmit}>
           <h2>Create an account</h2>
