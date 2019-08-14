@@ -13,18 +13,18 @@ function LoginFormContainer({
   const [feedback, setFeedback] = useState('');
 
   useEffect(() => {
-    if (users.status === 'OK') {
-      setFeedback(<div><span className='loader-text'>Logging in...</span><div className='loader'></div></div>)
-      // setTimeout(() => {
-        setFeedback('')
-        history.push('/lobby')
-      // }, 1500);
+    if (users.status === 'OK' && feedback === '') {
+      setFeedback(' ')
+      history.push('/lobby')
     }
-    // Ensures no form feedback when switching from create account to login
     else if (state.name === '' && state.password === '') {
-      setFeedback(
-        ''
-      )
+      setFeedback(' ')
+    } else if (users.status === 'OK' && feedback === ' ') {
+      setFeedback(<p className='loader-text'>Logging in...<span className='loader'></span></p>)
+      setTimeout(() => {
+        history.push('/lobby')
+      }, 1500)
+      
     } else if (users.status === 'BAD REQUEST LOGIN') {
       setFeedback(
         'Username and password combination incorrect. Please try again.'
@@ -38,7 +38,6 @@ function LoginFormContainer({
 
   const onSubmit = async e => {
     e.preventDefault();
-
     loginInAccountAction(state);
   };
 

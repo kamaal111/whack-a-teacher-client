@@ -12,15 +12,24 @@ function CreateAccountFormContainer({
   const [feedback, setFeedback] = useState('')
 
   useEffect(() => {
-    setFeedback('')
-    if (users.status === 'OK') {
-      setFeedback('')
-      history.push('/lobby');
+    if (users.status === 'OK' && feedback === '') {
+      setFeedback(' ')
+      history.push('/lobby')
+    }
+    else if (state.name === '' && state.password === '') {
+      setFeedback(' ')
+    } else if (users.status === 'OK' && feedback === ' ') {
+      setFeedback(<p className='loader-text'>Creating account...<span className='loader'></span></p>)
+      setTimeout(() => {
+        history.push('/lobby')
+      }, 1500)
+      
     } else if (users.status === 'BAD REQUEST SIGN UP') {
-      setFeedback('Username already taken. Please choose a different one.')
+      setFeedback(
+        'Username already taken. Please choose a different one.'
+      );
     }
   }, [history, users.status]);
-
 
   const onChange = e => {
     setState({ ...state, [e.target.name]: e.target.value });
