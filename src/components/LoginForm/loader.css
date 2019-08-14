@@ -1,10 +1,10 @@
 .loader {
-  width: 15px;
-  height: 15px;
+  width: 12px;
+  height: 12px;
   border: 3px solid black;
   border-top: 3px solid white;
   border-radius: 50%;
-  margin: 0 auto;
+  margin: 0 .5vw;
   animation: spin 1.2s infinite linear;
   display: inline-block;
 }
@@ -18,5 +18,4 @@
 }
 .loader-text {
   font-size: calc(2vh + .2rem);
-  margin-right: 1rem;
 }
