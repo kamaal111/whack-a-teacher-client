@@ -28,6 +28,9 @@ function CreateAccountFormContainer({
       setFeedback(
         'Username already taken. Please choose a different one.'
       );
+      setTimeout(() => {
+        setFeedback(' ')
+      }, 1500)
     }
   }, [history, users.status]);
 
