@@ -19,6 +19,7 @@ class App extends Component {
 
   componentDidMount() {
     this.source.onmessage = event => {
+      console.log('event.data', event.data);
       this.props.allLobbies(JSON.parse(event.data));
     };
   }
