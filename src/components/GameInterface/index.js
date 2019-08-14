@@ -74,7 +74,7 @@ class GameInterfaceContainer extends React.Component {
     return mole;
   };
 
-  handleGameStop = () => {
+  handleGameStop = async () => {
     clearInterval(this.state.intervalId);
     const moles = document.getElementsByClassName('mole');
     const molesArray = Array.from(moles);
@@ -84,22 +84,20 @@ class GameInterfaceContainer extends React.Component {
       });
     }, 1000);
 
-    const foundLobby = this.props.lobbies.find(
-      lobby => lobby.id === Number(this.props.match.params.gameId)
-    );
+    const findPlayerIndex = this.props.lobbies
+      .find(lobby => lobby.id === Number(this.props.match.params.gameId))
+      .users.findIndex(
+        element => this.props.users.activeUser.id === element.id
+      );
 
-    const findPlayerIndex = foundLobby.users.findIndex(
-      element => this.props.users.activeUser.id === element.id
-    );
-
-    console.log('findPlayerIndex', findPlayerIndex);
-
-    return request
+    const res = await request
       .put(
         `${url}/game/${this.props.match.params.gameId}/score/${findPlayerIndex +
           1}`
       )
       .send({ score: this.state.score });
+
+    console.log('res', res);
   };
 
   renderGame = () => {
@@ -114,13 +112,9 @@ class GameInterfaceContainer extends React.Component {
     );
 
     const calculateWinner = () => {
-      console.log('foundLobby.users', foundLobby.users);
-      console.log('this.props.users.activeUser', this.props.users.activeUser);
       const findPlayerIndex = foundLobby.users.findIndex(
         element => this.props.users.activeUser.id === element.id
       );
-
-      console.log('findPlayerIndex', findPlayerIndex);
 
       if (findPlayerIndex === 0) {
         return foundLobby.playerOneScore > foundLobby.playerTwoScore;
@@ -130,8 +124,6 @@ class GameInterfaceContainer extends React.Component {
     };
 
     if (foundLobby.users.length === 2) {
-      console.log('foundLobby.playerOneScore', foundLobby.playerOneScore);
-      console.log('foundLobby.playerTwoScore', foundLobby.playerTwoScore);
       if (
         foundLobby.playerOneScore !== null &&
         foundLobby.playerTwoScore !== null
