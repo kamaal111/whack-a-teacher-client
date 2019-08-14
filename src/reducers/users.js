@@ -4,7 +4,6 @@ const initialState = {
   activeUser: null,
   status: 'NOT SIGNED',
   authorized: false,
-  player: null
 };
 
 export default (state = initialState, { type, payload }) => {

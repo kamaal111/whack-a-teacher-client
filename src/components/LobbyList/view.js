@@ -6,7 +6,6 @@ export default function LobbyList(props) {
   const playersOnline = props.lobbies.reduce((total, current, index) => {
     // no lobbies
     if (props.lobbies.length === 0) {
-      console.log(props.lobbies)
       return false
     } else {
     return total + current.users.length
@@ -47,7 +46,7 @@ export default function LobbyList(props) {
             </tbody>
           </table>
         </div>
-        {playersOnline ? <p>{playersOnline} players online</p> : <p>0 players online</p>}
+        {playersOnline ? <p>{playersOnline} player(s) currently in games</p> : <p>0 players currently in games</p>}
       </div>
 
       <div id="create-lobby-container">
