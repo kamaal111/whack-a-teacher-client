@@ -14,7 +14,8 @@ class GameInterfaceContainer extends React.Component {
     moleCount: 0,
     moles: [],
     score: 0,
-    intervalId: 0
+    intervalId: 0,
+    countDown: 10
   };
 
   componentDidMount() {
@@ -84,16 +85,16 @@ class GameInterfaceContainer extends React.Component {
       });
     }, 1000);
 
-    const findPlayerIndex = this.props.lobbies
-      .find(lobby => lobby.id === Number(this.props.match.params.gameId))
-      .users.findIndex(
-        element => this.props.users.activeUser.id === element.id
-      );
+    const findPlayerIndex =
+      this.props.lobbies
+        .find(lobby => lobby.id === Number(this.props.match.params.gameId))
+        .users.findIndex(
+          element => this.props.users.activeUser.id === element.id
+        ) + 1;
 
     const res = await request
       .put(
-        `${url}/game/${this.props.match.params.gameId}/score/${findPlayerIndex +
-          1}`
+        `${url}/game/${this.props.match.params.gameId}/score/${findPlayerIndex}`
       )
       .send({ score: this.state.score });
 
@@ -105,6 +106,14 @@ class GameInterfaceContainer extends React.Component {
     });
 
     console.log('res', res);
+  };
+
+  // upon end delete lobby
+  deleteLobby = () => {
+    // wait 10 seconds
+    // clear interval
+    // delete lobby
+    // redirect to lobby list
   };
 
   renderGame = () => {
@@ -123,12 +132,12 @@ class GameInterfaceContainer extends React.Component {
         element => this.props.users.activeUser.id === element.id
       );
 
-      if (findPlayerIndex === 0) {
-        return foundLobby.playerOneScore > foundLobby.playerTwoScore;
-      }
-
       if (foundLobby.playerOneScore === foundLobby.playerTwoScore) {
         return 0;
+      }
+
+      if (findPlayerIndex === 0) {
+        return foundLobby.playerOneScore > foundLobby.playerTwoScore;
       }
 
       return foundLobby.playerTwoScore > foundLobby.playerOneScore;
@@ -148,27 +157,86 @@ class GameInterfaceContainer extends React.Component {
         foundLobby.playerTwoScore !== null
       ) {
         if (calculateWinner() === false) {
+          let newCount = this.state.countDown - 1;
+          console.log('this.state.countDown', this.state.countDown);
+          let timer = setTimeout(
+            () => this.setState({ countDown: newCount }),
+            1000
+          );
+
+          if (this.state.countDown === 0) {
+            clearInterval(timer);
+          }
+
           return (
             <div>
               <h1>LOSER</h1>
-              <button onClick={() => handleRematch()}>REMATCH</button>
+              <button
+                onClick={() => {
+                  this.setState({ countDown: 10 });
+                  return handleRematch();
+                }}
+              >
+                REMATCH IN {this.state.countDown}
+              </button>
             </div>
           );
         }
 
         if (calculateWinner() === 0) {
+          let newCount = this.state.countDown - 1;
+          console.log('this.state.countDown', this.state.countDown);
+          let timer = setTimeout(
+            () =>
+              this.setState({
+                countDown: newCount
+              }),
+            1000
+          );
+
+          if (this.state.countDown === 0) {
+            clearInterval(timer);
+          }
+
           return (
             <div>
               <h1>DRAW</h1>
-              <button onClick={() => handleRematch()}>REMATCH</button>
+              <button
+                onClick={() => {
+                  this.setState({
+                    countDown: 10
+                  });
+                  return handleRematch();
+                }}
+              >
+                REMATCH IN {this.state.countDown}
+              </button>
             </div>
           );
+        }
+
+        let newCount = this.state.countDown - 1;
+        console.log('this.state.countDown', this.state.countDown);
+        let timer = setTimeout(
+          () => this.setState({ countDown: newCount }),
+          1000
+        );
+
+        if (this.state.countDown === 0) {
+          clearInterval(timer);
         }
 
         return (
           <div>
             <h1>WINNER</h1>
-            <button onClick={() => handleRematch()}>REMATCH</button>
+            <button
+              onClick={() => {
+                this.setState({ countDown: 10 });
+                return handleRematch();
+              }}
+            >
+              REMATCH IN {this.state.countDown}
+            </button>
           </div>
         );
       }
@@ -195,7 +263,7 @@ class GameInterfaceContainer extends React.Component {
         <button
           onClick={() => {
             const intervalId = setInterval(this.launchTimer, 1000);
-            this.setState({ intervalId: intervalId });
+            this.setState({ intervalId });
           }}
         >
           START
