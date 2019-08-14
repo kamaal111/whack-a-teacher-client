@@ -8,7 +8,7 @@ h2 {
   font-size: calc(3vh + .2rem);
 }
 #create-account-form, #login-form {
-  margin-top: 20vh;
+  margin-top: 10vh;
 }
 h1 {
   margin-bottom: 5vh;
