@@ -97,6 +97,13 @@ class GameInterfaceContainer extends React.Component {
       )
       .send({ score: this.state.score });
 
+    this.setState({
+      moleCount: 0,
+      moles: [],
+      score: 0,
+      intervalId: 0
+    });
+
     console.log('res', res);
   };
 
@@ -141,11 +148,6 @@ class GameInterfaceContainer extends React.Component {
         foundLobby.playerTwoScore !== null
       ) {
         if (calculateWinner() === false) {
-          this.state.moleCount = 0;
-          this.state.moles = [];
-          this.state.score = 0;
-          this.state.intervalId = 0;
-
           return (
             <div>
               <h1>LOSER</h1>
@@ -155,11 +157,6 @@ class GameInterfaceContainer extends React.Component {
         }
 
         if (calculateWinner() === 0) {
-          this.state.moleCount = 0;
-          this.state.moles = [];
-          this.state.score = 0;
-          this.state.intervalId = 0;
-
           return (
             <div>
               <h1>DRAW</h1>
@@ -167,11 +164,6 @@ class GameInterfaceContainer extends React.Component {
             </div>
           );
         }
-
-        this.state.moleCount = 0;
-        this.state.moles = [];
-        this.state.score = 0;
-        this.state.intervalId = 0;
 
         return (
           <div>
