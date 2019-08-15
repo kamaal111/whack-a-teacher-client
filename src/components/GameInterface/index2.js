@@ -165,11 +165,8 @@ class GameInterfaceContainer extends React.Component {
       lobby => lobby.id === Number(this.props.match.params.gameId)
     );
 
-<<<<<<< HEAD
-=======
     console.log('Lobby:', lobby);
-
->>>>>>> 49bc27245de76fd6ee83ed682e32a6f92682c72d
+    
     // if there is a lobby
     if (lobby) {
       return (

@@ -75,53 +75,36 @@ export default function GameInterface(props) {
     }
 
     // Game over --> display results
-<<<<<<< HEAD
     if (props.state.gameDuration <= 0 && !props.state.returnToLobby) {
-
-=======
-    if (props.state.gameDuration <= 0) {
->>>>>>> 49bc27245de76fd6ee83ed682e32a6f92682c72d
       if (!props.state.scoresSent) {
         props.stopGame();
       }
 
-<<<<<<< HEAD
       if (props.state.countDownLobby === 0) {
         props.state.returnToLobby = true
       }
 
       props.countDownLobbyFunction()
-      
-      return (
-        <div id='game-interface'>
-          <p>Player one score:</p>
-          <p>Player two score:</p>
-  
-=======
+
       return (
         <div id="game-interface">
-          <p>Player one score: {props.playerScore}</p>
-          <p>Player two score: {props.opponentScore}</p>
+          <div className='final-result'>
+            <p>Your score: {props.playerScore}</p>
+            <p>Your opponent's score: {props.opponentScore}</p>
 
->>>>>>> 49bc27245de76fd6ee83ed682e32a6f92682c72d
-          <div>
-            <button>Back to lobby {props.state.countDownLobby}</button>
+            <div>
+              <p class='italic'>Back to lobby in {props.state.countDownLobby} seconds</p>
+            </div>
           </div>
         </div>
-<<<<<<< HEAD
-      )
-    }
-    if (props.state.returnToLobby) {
-      props.deleteLobby()
-
-      return null
-=======
       );
-
-      // return to lobby
-      props.deleteLobby();
->>>>>>> 49bc27245de76fd6ee83ed682e32a6f92682c72d
     }
+
+
+    props.deleteLobby();
+
+    return null;
+
   } else {
     return null;
   }
