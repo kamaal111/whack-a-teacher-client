@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as request from 'superagent';
 
-import GameInterface from './view'
+import GameInterface from './view';
 import { authorizeUser } from '../../actions';
 
 import url from '../../urls';
@@ -30,12 +30,13 @@ class GameInterfaceContainer extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    this.countDown();
+  }
+
   countDown = () => {
     const newCount = this.state.countDown - 1;
-    let timer = setTimeout(
-      () => this.setState({ countDown: newCount }),
-      1000
-    );
+    let timer = setTimeout(() => this.setState({ countDown: newCount }), 1000);
 
     if (this.state.countDown === 0) {
       clearInterval(timer);
@@ -54,8 +55,8 @@ class GameInterfaceContainer extends React.Component {
 
   startGame = () => {
     const intervalId = setInterval(this.launchTimer, 1000);
-    this.setState({ intervalId });
-  }
+    this.setState({ intervalId, gameStart: true });
+  };
 
   whackMole = e => {
     const audio = new Audio(
@@ -71,9 +72,14 @@ class GameInterfaceContainer extends React.Component {
     const randomHeight = Math.min(Math.floor(Math.random() * 80), 70);
     const randomWidth = Math.min(Math.floor(Math.random() * 60), 54.5);
 
+    const arrayOfPictures = ['rein', 'mimi', 'kelley', 'david', 'arien'];
+
     const moleStyle = {
       top: `${randomHeight}vh`,
-      left: `${randomWidth}vw`
+      left: `${randomWidth}vw`,
+      backgroundImage: `url(${require(`../../images/${
+        arrayOfPictures[Math.floor(Math.random() * arrayOfPictures.length)]
+      }.png`)})`
     };
 
     const mole = (
@@ -127,17 +133,18 @@ class GameInterfaceContainer extends React.Component {
   };
 
   backToLobby = async () => {
-    await request.put(`${url}/user/${this.props.users.activeUser.id}/remove`).set('authorization', `Bearer ${this.props.users.activeUser.token}`)
+    await request
+      .put(`${url}/user/${this.props.users.activeUser.id}/remove`)
+      .set('authorization', `Bearer ${this.props.users.activeUser.token}`);
     return this.props.history.push('/lobby');
   };
 
   render() {
-
     const lobby = this.props.lobbies.find(
       lobby => lobby.id === Number(this.props.match.params.gameId)
     );
 
-    console.log('Lobby:', lobby)
+    console.log('Lobby:', lobby);
 
     // if there is a lobby
     if (lobby) {
@@ -151,15 +158,13 @@ class GameInterfaceContainer extends React.Component {
           stopGame={this.stopGame}
           deleteLobby={this.deleteLobby}
           backToLobby={this.backToLobby}
+          match={this.props.match}
         />
-      )
+      );
     }
     // Return nothing if there is no lobby
-    return (
-      <div></div>
-    )
+    return <div />;
   }
-
 }
 
 const mapStateToProps = ({ users, lobbies }) => ({ users, lobbies });
