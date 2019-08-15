@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import CreateAccountFormContainer from './components/CreateAccountForm';
 import LobbyListContainer from './components/LobbyList';
 import LoginFormContainer from './components/LoginForm';
-import GameInterfaceContainer from './components/GameInterface';
+import GameInterfaceContainer from './components/GameInterface/index2';
 
 import { allLobbies } from './actions';
 
