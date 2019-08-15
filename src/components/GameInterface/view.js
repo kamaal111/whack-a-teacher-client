@@ -8,7 +8,7 @@ export default function GameInterface(props) {
   if (props.lobbyLength === 1) {
     return (
       <div id="game-interface">
-        <button onClick={() => props.history.push('/lobby')}>Back to lobby</button>
+        <button onClick={props.backToLobby}>Back to lobby</button>
         <div className="statistics">
           <GameStatistics
             // player={this.props.users.activeUser.name}

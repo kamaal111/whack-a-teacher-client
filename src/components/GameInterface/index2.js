@@ -126,6 +126,11 @@ class GameInterfaceContainer extends React.Component {
     return this.props.history.push('/lobby');
   };
 
+  backToLobby = async () => {
+    await request.put(`${url}/user/${this.props.users.activeUser.id}/remove`).set('authorization', `Bearer ${this.props.users.activeUser.token}`)
+    return this.props.history.push('/lobby');
+  };
+
   render() {
 
     const lobby = this.props.lobbies.find(
@@ -145,6 +150,7 @@ class GameInterfaceContainer extends React.Component {
           startGame={this.startGame}
           stopGame={this.stopGame}
           deleteLobby={this.deleteLobby}
+          backToLobby={this.backToLobby}
         />
       )
     }
