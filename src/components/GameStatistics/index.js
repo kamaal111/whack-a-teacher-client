@@ -1,18 +1,18 @@
-import React from 'react'
+import React from 'react';
 
 export default function GameStatistics(props) {
   if (props.player && props.score) {
-    return(
+    return (
       <div>
         <p>{props.player}</p>
         <p>Score: {props.score}</p>
       </div>
-    )
-  } else {
-    return(
-      <div>
-        <p>{props.player}</p>
-      </div>
-    )
+    );
   }
+
+  return (
+    <div>
+      <p>{props.player}</p>
+    </div>
+  );
 }
