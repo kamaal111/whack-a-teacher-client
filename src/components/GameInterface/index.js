@@ -3,11 +3,13 @@ import { connect } from 'react-redux';
 import * as request from 'superagent';
 
 import GameStatistics from '../GameStatistics';
+import WinConditionButton from './WinConditionButton';
 
-import './GameInterface.css';
 import { authorizeUser } from '../../actions';
 
 import url from '../../urls';
+
+import './GameInterface.css';
 
 class GameInterfaceContainer extends React.Component {
   state = {
@@ -19,7 +21,6 @@ class GameInterfaceContainer extends React.Component {
   };
 
   componentDidMount() {
-    console.log('this.props!!!!!!!!!!!!', this.props);
     if (this.props.users.activeUser === null) {
       return this.props.history.push('/login');
     }
@@ -80,10 +81,17 @@ class GameInterfaceContainer extends React.Component {
     return mole;
   };
 
+  findPlayerIndex = foundLobby => {
+    return foundLobby.users.findIndex(
+      element => this.props.users.activeUser.id === element.id
+    );
+  };
+
   handleGameStop = async () => {
     clearInterval(this.state.intervalId);
     const moles = document.getElementsByClassName('mole');
     const molesArray = Array.from(moles);
+
     setTimeout(() => {
       molesArray.forEach(mole => {
         mole.style.display = 'none';
@@ -120,12 +128,6 @@ class GameInterfaceContainer extends React.Component {
     return this.props.history.push('/lobby');
   };
 
-  findPlayerIndex = foundLobby => {
-    return foundLobby.users.findIndex(
-      element => this.props.users.activeUser.id === element.id
-    );
-  };
-
   renderGame = () => {
     const { moles } = this.state;
     console.log(moles);
@@ -137,13 +139,8 @@ class GameInterfaceContainer extends React.Component {
       lobby => lobby.id === Number(this.props.match.params.gameId)
     );
 
-    const findPlayerIndex = foundLobby.users.findIndex(
-      element => this.props.users.activeUser.id === element.id
-    );
-
     const calculateWinner = () => {
       this.findPlayerIndex(foundLobby);
-
 
       if (foundLobby.playerOneScore === foundLobby.playerTwoScore) {
         return 0;
@@ -160,6 +157,8 @@ class GameInterfaceContainer extends React.Component {
       const res = await request.put(
         `${url}/game/${this.props.match.params.gameId}/rematch`
       );
+
+      this.setState({ countDown: 10 });
 
       console.log('res', res);
     };
@@ -189,17 +188,10 @@ class GameInterfaceContainer extends React.Component {
           }
 
           return (
-            <div>
-              <h1>LOSER</h1>
-              <button
-                onClick={() => {
-                  this.setState({ countDown: 10 });
-                  return handleRematch();
-                }}
-              >
-                REMATCH
-              </button>
-            </div>
+            <WinConditionButton
+              handleOnclick={handleRematch}
+              winOrLose={'LOSER'}
+            />
           );
         }
 
@@ -211,19 +203,10 @@ class GameInterfaceContainer extends React.Component {
           }
 
           return (
-            <div>
-              <h1>DRAW</h1>
-              <button
-                onClick={() => {
-                  this.setState({
-                    countDown: 10
-                  });
-                  return handleRematch();
-                }}
-              >
-                REMATCH
-              </button>
-            </div>
+            <WinConditionButton
+              handleOnclick={handleRematch}
+              winOrLose={'DRAW'}
+            />
           );
         }
 
@@ -234,17 +217,10 @@ class GameInterfaceContainer extends React.Component {
         }
 
         return (
-          <div>
-            <h1>WINNER</h1>
-            <button
-              onClick={() => {
-                this.setState({ countDown: 10 });
-                return handleRematch();
-              }}
-            >
-              REMATCH
-            </button>
-          </div>
+          <WinConditionButton
+            handleOnclick={handleRematch}
+            winOrLose={'WINNER'}
+          />
         );
       }
 
