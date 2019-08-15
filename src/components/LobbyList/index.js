@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import LobbyList from './view';
+import Header from '../Header'
 
 import { createLobbyAuthorization } from '../../actions';
 
@@ -9,6 +10,7 @@ class LobbyListContainer extends Component {
   state = { lobbyName: '' };
 
   componentDidMount() {
+    // Commented out for testing purposes
     // if (this.props.users.activeUser === null) {
     //   return this.props.history.push('/login');
     // }
@@ -33,12 +35,15 @@ class LobbyListContainer extends Component {
 
   render() {
     return (
-      <LobbyList
-        lobbies={this.props.lobbies}
-        submitLobby={this.submitLobby}
-        onchangeLobbyName={this.onchangeLobbyName}
-        lobbyName={this.state.lobbyName}
-      />
+      <div>
+        <Header />
+        <LobbyList
+          lobbies={this.props.lobbies}
+          submitLobby={this.submitLobby}
+          onchangeLobbyName={this.onchangeLobbyName}
+          lobbyName={this.state.lobbyName}
+        />
+      </div>
     );
   }
 }

@@ -1,0 +1,15 @@
+.header {
+  height: 6vh;
+  border-bottom: 2px solid rgb(39, 2, 39);
+  position: relative;
+}
+.logo {
+  content: url('../../images/whack.png');
+  border-radius: 50%;
+  vertical-align: middle;
+  transform: rotate(-5deg);
+  max-height: 80%;
+  position: absolute;
+  top: .5vh;
+  left: .5vh;
+}

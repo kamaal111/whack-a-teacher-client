@@ -116,7 +116,7 @@ class GameInterfaceContainer extends React.Component {
     //   moles: [],
     //   score: 0,
     //   intervalId: 0
-    // });
+    // })
 
     // console.log('res', res);
   };
@@ -136,8 +136,6 @@ class GameInterfaceContainer extends React.Component {
     const lobby = this.props.lobbies.find(
       lobby => lobby.id === Number(this.props.match.params.gameId)
     );
-
-    console.log('Lobby:', lobby)
 
     // if there is a lobby
     if (lobby) {
