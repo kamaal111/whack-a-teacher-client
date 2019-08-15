@@ -1,9 +1,12 @@
-import React from 'react'
-import GameStatistics from '../GameStatistics'
+import React from 'react';
+import GameStatistics from '../GameStatistics';
+import * as request from 'superagent';
+
+import url from '../../urls';
+
 import './GameInterface.css';
 
 export default function GameInterface(props) {
-
   // One player in game
   if (props.lobbyLength === 1) {
     return (
@@ -18,12 +21,12 @@ export default function GameInterface(props) {
             score={'P1 score'}
           />
         </div>
-        <div id="battlefield"></div>
+        <div id="battlefield" />
         <div className="statistics">
           <p>Waiting for another player to join...</p>
         </div>
       </div>
-    )
+    );
   }
 
   // Two players in game
@@ -85,14 +88,7 @@ export default function GameInterface(props) {
       if (!props.state.scoresSent) {
         props.stopGame()
       }
-
-      props.state.gameOver = true
-
-      props.countDownLobbyFunction()
-
-      // Timer to go back to lobby
-      while (props.state.countDownLobby > 0) {
-
+      
         return (
           <div id='game-interface'>
             <p>Player one score:</p>
@@ -103,7 +99,6 @@ export default function GameInterface(props) {
             </div>
           </div>
         )
-      }
 
       // return to lobby
       props.deleteLobby()
