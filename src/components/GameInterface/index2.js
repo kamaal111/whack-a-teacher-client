@@ -18,7 +18,8 @@ class GameInterfaceContainer extends React.Component {
     gameStarted: false,
     gameDuration: 5,
     gameOver: false,
-    scoresSent: false
+    scoresSent: false,
+    returnToLobby: false
   };
 
   componentDidMount() {
@@ -150,13 +151,11 @@ class GameInterfaceContainer extends React.Component {
       lobby => lobby.id === Number(this.props.match.params.gameId)
     );
 
-    console.log('Lobby:', lobby)
-
     // if there is a lobby
     if (lobby) {
       return (
         <GameInterface
-          lobby={lobby}
+          name={this.props.users.activeUser.name}
           lobbyLength={lobby.users.length}
           state={this.state}
           countDownFunction={this.countDown}
