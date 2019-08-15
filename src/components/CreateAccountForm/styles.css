@@ -28,10 +28,11 @@ label {
   margin: 2rem;
 }
 input {
-  margin-left: .5rem;
   border: none;
   border-bottom: 2px solid rgb(39, 2, 39);
   background-color: rgb(237, 255, 233);
+  width: 80%;
+  margin: .5rem auto 0 auto;
 }
 input:active, input:focus {
   outline: none;
