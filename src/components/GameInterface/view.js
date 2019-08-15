@@ -11,8 +11,8 @@ export default function GameInterface(props) {
   if (props.lobbyLength === 1) {
     return (
       <div id="game-interface">
-        <div className='button-div'>
-        <button onClick={props.backToLobby}>Back to lobby</button>
+        <div className="button-div">
+          <button onClick={props.backToLobby}>Back to lobby</button>
         </div>
         <div className="statistics">
           <GameStatistics
@@ -31,10 +31,9 @@ export default function GameInterface(props) {
 
   // Two players in game
   if (props.lobbyLength === 2) {
-
     // Display countdown before game
     while (props.state.countDown > 0 && !props.state.gameOver) {
-      props.countDownFunction()
+      props.countDownFunction();
 
       return (
         <div id="game-interface">
@@ -47,20 +46,17 @@ export default function GameInterface(props) {
           </div>
           <div id="battlefield">{props.state.countDown}</div>
           <div className="statistics">
-            <GameStatistics
-              player={'Your opponent'}
-            />
+            <GameStatistics player={'Your opponent'} />
           </div>
         </div>
-      )
+      );
     }
 
     // Start game
     if (props.state.countDown === 0 && props.state.gameDuration > 0) {
-
       if (!props.state.gameStarted) {
-        props.startGame()
-        props.state.gameStarted = true
+        props.startGame();
+        props.state.gameStarted = true;
       }
 
       return (
@@ -74,39 +70,33 @@ export default function GameInterface(props) {
           </div>
           <div id="battlefield">{props.state.moles}</div>
           <div className="statistics">
-            <GameStatistics
-              player={'Your opponent'}
-            />
+            <GameStatistics player={'Your opponent'} />
           </div>
         </div>
-      )
+      );
     }
 
     // Game over --> display results
     if (props.state.gameDuration <= 0) {
-
       if (!props.state.scoresSent) {
-        props.stopGame()
+        props.stopGame();
       }
-      
-        return (
-          <div id='game-interface'>
-            <p>Player one score:</p>
-            <p>Player two score:</p>
-  
-            <div>
-              <button>Back to lobby {props.state.countDownLobby}</button>
-            </div>
+
+      return (
+        <div id="game-interface">
+          <p>Player one score: {props.playerScore}</p>
+          <p>Player two score: {props.opponentScore}</p>
+
+          <div>
+            <button>Back to lobby {props.state.countDownLobby}</button>
           </div>
-        )
+        </div>
+      );
 
       // return to lobby
-      props.deleteLobby()
+      props.deleteLobby();
     }
-  }
-  else {
-    return(
-      null
-    )
+  } else {
+    return null;
   }
 }

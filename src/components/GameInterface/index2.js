@@ -103,6 +103,20 @@ class GameInterfaceContainer extends React.Component {
     return mole;
   };
 
+  foundLobby = () => {
+    return this.props.lobbies.find(
+      lobby => lobby.id === Number(this.props.match.params.gameId)
+    );
+  };
+
+  findOpponentScore = player1 => {
+    return this.foundLobby().users.findIndex(
+      element => player1 === element.id
+    ) === 0
+      ? this.foundLobby().playerTwoScore
+      : this.foundLobby().playerOneScore;
+  };
+
   stopGame = async () => {
     clearInterval(this.state.intervalId);
     const moles = document.getElementsByClassName('mole');
@@ -112,26 +126,26 @@ class GameInterfaceContainer extends React.Component {
         mole.style.display = 'none';
       });
     }, 1000);
-      
+
     const playerIndex =
-      this.props.lobbies
-        .find(lobby => lobby.id === Number(this.props.match.params.gameId))
-        .users.findIndex(
-          element => this.props.users.activeUser.id === element.id
-        ) + 1;
+      this.foundLobby().users.findIndex(
+        element => this.props.users.activeUser.id === element.id
+      ) + 1;
 
     const res = await request
-      .put(`${url}/game/${this.props.match.params.gameId}/score/${playerIndex})`)
-      .send({ score: this.state.score })
+      .put(
+        `${url}/game/${this.props.match.params.gameId}/score/${playerIndex})`
+      )
+      .send({ score: this.state.score });
 
-    console.log('Res:', res)
-      
+    console.log('Res:', res);
+
     this.setState({
       scoresSent: true
-    })  
+    });
 
-    return res
-  }
+    return res;
+  };
 
   deleteLobby = async () => {
     await request.del(`${url}/games/${this.props.match.params.gameId}`);
@@ -150,7 +164,7 @@ class GameInterfaceContainer extends React.Component {
       lobby => lobby.id === Number(this.props.match.params.gameId)
     );
 
-    console.log('Lobby:', lobby)
+    console.log('Lobby:', lobby);
 
     // if there is a lobby
     if (lobby) {
@@ -166,13 +180,13 @@ class GameInterfaceContainer extends React.Component {
           deleteLobby={this.deleteLobby}
           backToLobby={this.backToLobby}
           match={this.props.match}
+          playerScore={this.state.score}
+          opponentScore={this.findOpponentScore(this.props.users.activeUser.id)}
         />
       );
     }
     // Return nothing if there is no lobby
-    return (
-      null
-    )
+    return null;
   }
 }
 
