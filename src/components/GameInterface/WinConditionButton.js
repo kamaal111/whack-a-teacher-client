@@ -1,9 +1,16 @@
 import React from 'react';
 
-export default function WinConditionButton({ handleOnclick, winOrLose }) {
+export default function WinConditionButton({
+  handleOnclick,
+  winOrLose,
+  opponentScore,
+  playerScore
+}) {
   return (
     <div>
       <h1>{winOrLose}</h1>
+      <h1>YOU SCORED {playerScore}</h1>
+      <h1>YOUR OPPONENT SCORED {opponentScore}</h1>
       <button onClick={handleOnclick}>REMATCH</button>
     </div>
   );

@@ -17,7 +17,9 @@ class GameInterfaceContainer extends React.Component {
     moles: [],
     score: 0,
     intervalId: 0,
-    countDown: 10
+    countDown: 10,
+    countGameStart: 5,
+    gameStart: false
   };
 
   componentDidMount() {
@@ -64,9 +66,14 @@ class GameInterfaceContainer extends React.Component {
     const randomHeight = Math.min(Math.floor(Math.random() * 80), 70);
     const randomWidth = Math.min(Math.floor(Math.random() * 60), 54.5);
 
+    const arrayOfPictures = ['rein', 'mimi', 'kelley', 'david', 'arien'];
+
     const moleStyle = {
       top: `${randomHeight}vh`,
-      left: `${randomWidth}vw`
+      left: `${randomWidth}vw`,
+      backgroundImage: `url(${require(`../../images/${
+        arrayOfPictures[Math.floor(Math.random() * arrayOfPictures.length)]
+      }.png`)})`
     };
 
     const mole = (
@@ -140,8 +147,6 @@ class GameInterfaceContainer extends React.Component {
     );
 
     const calculateWinner = () => {
-      this.findPlayerIndex(foundLobby);
-
       if (foundLobby.playerOneScore === foundLobby.playerTwoScore) {
         return 0;
       }
@@ -180,48 +185,85 @@ class GameInterfaceContainer extends React.Component {
         foundLobby.playerOneScore !== null &&
         foundLobby.playerTwoScore !== null
       ) {
+        const opponentScore =
+          this.findPlayerIndex(foundLobby) === 0
+            ? foundLobby.playerTwoScore
+            : foundLobby.playerOneScore;
+
+        const playerScore =
+          this.findPlayerIndex(foundLobby) === 0
+            ? foundLobby.playerOneScore
+            : foundLobby.playerTwoScore;
+
         if (calculateWinner() === false) {
           countDowner();
-
-          if (this.state.countDown === 0) {
-            this.deleteLobby();
-          }
-
+          if (this.state.countDown === 0) this.deleteLobby();
           return (
             <WinConditionButton
               handleOnclick={handleRematch}
               winOrLose={'LOSER'}
+              playerScore={playerScore}
+              opponentScore={opponentScore}
             />
           );
         }
 
         if (calculateWinner() === 0) {
           countDowner();
-
-          if (this.state.countDown === 0) {
-            this.deleteLobby();
-          }
-
+          if (this.state.countDown === 0) this.deleteLobby();
           return (
             <WinConditionButton
               handleOnclick={handleRematch}
               winOrLose={'DRAW'}
+              playerScore={playerScore}
+              opponentScore={opponentScore}
             />
           );
         }
 
         countDowner();
-
-        if (this.state.countDown === 0) {
-          this.deleteLobby();
-        }
-
+        if (this.state.countDown === 0) this.deleteLobby();
         return (
           <WinConditionButton
             handleOnclick={handleRematch}
             winOrLose={'WINNER'}
+            playerScore={playerScore}
+            opponentScore={opponentScore}
           />
         );
+      }
+
+      const startGame = () => {
+        const intervalId = setInterval(this.launchTimer, 1000);
+        this.setState({ intervalId, gameStart: true });
+      };
+
+      const countGameStarter = () => {
+        const newCount = this.state.countGameStart - 1;
+        let timer = setTimeout(
+          () => this.setState({ countGameStart: newCount }),
+          1000
+        );
+
+        if (this.state.countGameStart === 0) {
+          startGame();
+          clearInterval(timer);
+        }
+      };
+
+      if (this.state.gameStart === false) {
+        countGameStarter();
+      }
+
+      const player2Index =
+        foundLobby.users.findIndex(
+          element => this.props.users.activeUser.id === element.id
+        ) === 0
+          ? 1
+          : 0;
+
+      if (this.state.countGameStart !== 0) {
+        return <h1>{this.state.countGameStart}</h1>;
       }
 
       return (
@@ -234,7 +276,7 @@ class GameInterfaceContainer extends React.Component {
           </div>
           <div id="battlefield">{moles}</div>
           <div className="statistics">
-            <GameStatistics player={'other player'} />
+            <GameStatistics player={foundLobby.users[player2Index].name} />
           </div>
         </div>
       );
@@ -246,14 +288,6 @@ class GameInterfaceContainer extends React.Component {
       <div>
         {this.renderGame()}
         <button onClick={this.handleGameStop}>Stop game</button>
-        <button
-          onClick={() => {
-            const intervalId = setInterval(this.launchTimer, 1000);
-            this.setState({ intervalId });
-          }}
-        >
-          READY
-        </button>
         <button>LEAVE LOBBY IN {this.state.countDown}</button>
       </div>
     );
