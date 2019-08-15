@@ -49,8 +49,10 @@ class GameInterfaceContainer extends React.Component {
   };
 
   whackMole = e => {
-    const audio = new Audio('http://wohlsoft.ru/docs/Sounds/SMBX_OPL/SMBX_OPL_Sounds_src/WAV/sm-boss-hit.wav');
-    audio.play()
+    const audio = new Audio(
+      'http://wohlsoft.ru/docs/Sounds/SMBX_OPL/SMBX_OPL_Sounds_src/WAV/sm-boss-hit.wav'
+    );
+    audio.play();
     const mole = document.getElementById(`${e.target.id}`);
     mole.style.display = 'none';
     this.setState({ score: this.state.score + 1 });
@@ -111,7 +113,7 @@ class GameInterfaceContainer extends React.Component {
   };
 
   // upon end delete lobby
-  deleteLobby = () => {
+  deleteLobby = async () => {
     // wait 10 seconds
     // clear interval
     // delete lobby
@@ -153,22 +155,25 @@ class GameInterfaceContainer extends React.Component {
       console.log('res', res);
     };
 
+    const countDowner = () => {
+      const newCount = this.state.countDown - 1;
+      let timer = setTimeout(
+        () => this.setState({ countDown: newCount }),
+        1000
+      );
+
+      if (this.state.countDown === 0) {
+        clearInterval(timer);
+      }
+    };
+
     if (foundLobby.users.length === 2) {
       if (
         foundLobby.playerOneScore !== null &&
         foundLobby.playerTwoScore !== null
       ) {
         if (calculateWinner() === false) {
-          let newCount = this.state.countDown - 1;
-          console.log('this.state.countDown', this.state.countDown);
-          let timer = setTimeout(
-            () => this.setState({ countDown: newCount }),
-            1000
-          );
-
-          if (this.state.countDown === 0) {
-            clearInterval(timer);
-          }
+          countDowner();
 
           return (
             <div>
@@ -186,19 +191,7 @@ class GameInterfaceContainer extends React.Component {
         }
 
         if (calculateWinner() === 0) {
-          let newCount = this.state.countDown - 1;
-          console.log('this.state.countDown', this.state.countDown);
-          let timer = setTimeout(
-            () =>
-              this.setState({
-                countDown: newCount
-              }),
-            1000
-          );
-
-          if (this.state.countDown === 0) {
-            clearInterval(timer);
-          }
+          countDowner();
 
           return (
             <div>
@@ -217,16 +210,7 @@ class GameInterfaceContainer extends React.Component {
           );
         }
 
-        let newCount = this.state.countDown - 1;
-        console.log('this.state.countDown', this.state.countDown);
-        let timer = setTimeout(
-          () => this.setState({ countDown: newCount }),
-          1000
-        );
-
-        if (this.state.countDown === 0) {
-          clearInterval(timer);
-        }
+        countDowner();
 
         return (
           <div>
@@ -237,7 +221,7 @@ class GameInterfaceContainer extends React.Component {
                 return handleRematch();
               }}
             >
-              REMATCH IN {this.state.countDown}
+              REMATCH
             </button>
           </div>
         );
@@ -246,7 +230,10 @@ class GameInterfaceContainer extends React.Component {
       return (
         <div id="game-interface">
           <div className="statistics">
-            <GameStatistics player={this.props.users.activeUser.name} score={this.state.score} />
+            <GameStatistics
+              player={this.props.users.activeUser.name}
+              score={this.state.score}
+            />
           </div>
           <div id="battlefield">{moles}</div>
           <div className="statistics">
@@ -268,7 +255,7 @@ class GameInterfaceContainer extends React.Component {
             this.setState({ intervalId });
           }}
         >
-          START
+          READY
         </button>
         <button
           onClick={() => {
@@ -281,7 +268,7 @@ class GameInterfaceContainer extends React.Component {
             this.props.history.push('/lobby');
           }}
         >
-          LEAVE LOBBY
+          LEAVE LOBBY IN {this.state.countDown}
         </button>
       </div>
     );
