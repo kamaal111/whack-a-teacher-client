@@ -137,8 +137,13 @@ class GameInterfaceContainer extends React.Component {
       lobby => lobby.id === Number(this.props.match.params.gameId)
     );
 
+    const findPlayerIndex = foundLobby.users.findIndex(
+      element => this.props.users.activeUser.id === element.id
+    );
+
     const calculateWinner = () => {
       this.findPlayerIndex(foundLobby);
+
 
       if (foundLobby.playerOneScore === foundLobby.playerTwoScore) {
         return 0;
