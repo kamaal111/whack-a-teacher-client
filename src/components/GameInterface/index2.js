@@ -14,7 +14,9 @@ class GameInterfaceContainer extends React.Component {
     score: 0,
     intervalId: 0,
     countDown: 5,
-    gameStart: false
+    gameStart: false,
+    gameDuration: 10,
+    gameOver: false
   };
 
   componentDidMount() {
@@ -43,7 +45,8 @@ class GameInterfaceContainer extends React.Component {
     for (let i = 0; i < 1; i++) {
       this.setState({
         moleCount: this.state.moleCount + 1,
-        moles: [...this.state.moles, this.renderMole()]
+        moles: [...this.state.moles, this.renderMole()],
+        gameDuration: this.state.gameDuration - 1
       });
     }
   };
@@ -52,6 +55,16 @@ class GameInterfaceContainer extends React.Component {
     const intervalId = setInterval(this.launchTimer, 1000);
     this.setState({ intervalId });
   }
+
+  whackMole = e => {
+    const audio = new Audio(
+      'http://wohlsoft.ru/docs/Sounds/SMBX_OPL/SMBX_OPL_Sounds_src/WAV/sm-boss-hit.wav'
+    );
+    audio.play();
+    const mole = document.getElementById(`${e.target.id}`);
+    mole.style.display = 'none';
+    this.setState({ score: this.state.score + 1 });
+  };
 
   renderMole = () => {
     const randomHeight = Math.min(Math.floor(Math.random() * 80), 70);
@@ -74,6 +87,39 @@ class GameInterfaceContainer extends React.Component {
     return mole;
   };
 
+  stopGame = async () => {
+    clearInterval(this.state.intervalId);
+    const moles = document.getElementsByClassName('mole');
+    const molesArray = Array.from(moles);
+    setTimeout(() => {
+      molesArray.forEach(mole => {
+        mole.style.display = 'none';
+      });
+    }, 1000);
+
+    // const findPlayerIndex =
+    //   this.props.lobbies
+    //     .find(lobby => lobby.id === Number(this.props.match.params.gameId))
+    //     .users.findIndex(
+    //       element => this.props.users.activeUser.id === element.id
+    //     ) + 1;
+
+    // const res = await request
+    //   .put(
+    //     `${url}/game/${this.props.match.params.gameId}/score/${findPlayerIndex}`
+    //   )
+    //   .send({ score: this.state.score });
+
+    // this.setState({
+    //   moleCount: 0,
+    //   moles: [],
+    //   score: 0,
+    //   intervalId: 0
+    // });
+
+    // console.log('res', res);
+  };
+
   render() {
 
     const lobby = this.props.lobbies.find(
@@ -89,6 +135,7 @@ class GameInterfaceContainer extends React.Component {
           history={this.props.history}
           countDownFunction={this.countDown}
           startGame={this.startGame}
+          stopGame={this.stopGame}
         />
       )
     }
