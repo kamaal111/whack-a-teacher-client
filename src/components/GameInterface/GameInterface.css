@@ -13,7 +13,7 @@
   width: 5.5vw;
   height: 10vh;
   position: absolute;
-  background-image: url(../../images/arien.png);
+  /* background-image: url(../../images/arien.png); */
   background-size: 100%;
   border-radius: 50px;
 }
