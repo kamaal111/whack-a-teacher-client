@@ -19,6 +19,7 @@ class GameInterfaceContainer extends React.Component {
   };
 
   componentDidMount() {
+    console.log('this.props!!!!!!!!!!!!', this.props);
     if (this.props.users.activeUser === null) {
       return this.props.history.push('/login');
     }
@@ -114,10 +115,15 @@ class GameInterfaceContainer extends React.Component {
 
   // upon end delete lobby
   deleteLobby = async () => {
-    // wait 10 seconds
-    // clear interval
-    // delete lobby
-    // redirect to lobby list
+    await request.del(`${url}/games/${this.props.match.params.gameId}`);
+
+    return this.props.history.push('/lobby');
+  };
+
+  findPlayerIndex = foundLobby => {
+    return foundLobby.users.findIndex(
+      element => this.props.users.activeUser.id === element.id
+    );
   };
 
   renderGame = () => {
@@ -132,15 +138,13 @@ class GameInterfaceContainer extends React.Component {
     );
 
     const calculateWinner = () => {
-      const findPlayerIndex = foundLobby.users.findIndex(
-        element => this.props.users.activeUser.id === element.id
-      );
+      this.findPlayerIndex(foundLobby);
 
       if (foundLobby.playerOneScore === foundLobby.playerTwoScore) {
         return 0;
       }
 
-      if (findPlayerIndex === 0) {
+      if (this.findPlayerIndex(foundLobby) === 0) {
         return foundLobby.playerOneScore > foundLobby.playerTwoScore;
       }
 
@@ -167,13 +171,17 @@ class GameInterfaceContainer extends React.Component {
       }
     };
 
-    if (foundLobby.users.length === 2) {
+    if (foundLobby && foundLobby.users.length === 2) {
       if (
         foundLobby.playerOneScore !== null &&
         foundLobby.playerTwoScore !== null
       ) {
         if (calculateWinner() === false) {
           countDowner();
+
+          if (this.state.countDown === 0) {
+            this.deleteLobby();
+          }
 
           return (
             <div>
@@ -184,7 +192,7 @@ class GameInterfaceContainer extends React.Component {
                   return handleRematch();
                 }}
               >
-                REMATCH IN {this.state.countDown}
+                REMATCH
               </button>
             </div>
           );
@@ -192,6 +200,10 @@ class GameInterfaceContainer extends React.Component {
 
         if (calculateWinner() === 0) {
           countDowner();
+
+          if (this.state.countDown === 0) {
+            this.deleteLobby();
+          }
 
           return (
             <div>
@@ -204,13 +216,17 @@ class GameInterfaceContainer extends React.Component {
                   return handleRematch();
                 }}
               >
-                REMATCH IN {this.state.countDown}
+                REMATCH
               </button>
             </div>
           );
         }
 
         countDowner();
+
+        if (this.state.countDown === 0) {
+          this.deleteLobby();
+        }
 
         return (
           <div>
@@ -237,7 +253,7 @@ class GameInterfaceContainer extends React.Component {
           </div>
           <div id="battlefield">{moles}</div>
           <div className="statistics">
-            <GameStatistics />
+            <GameStatistics player={'other player'} />
           </div>
         </div>
       );
@@ -257,19 +273,7 @@ class GameInterfaceContainer extends React.Component {
         >
           READY
         </button>
-        <button
-          onClick={() => {
-            authorizeUser(
-              this.props.users.activeUser.token,
-              this.props.users.activeUser.id,
-              null
-            );
-
-            this.props.history.push('/lobby');
-          }}
-        >
-          LEAVE LOBBY IN {this.state.countDown}
-        </button>
+        <button>LEAVE LOBBY IN {this.state.countDown}</button>
       </div>
     );
   }
