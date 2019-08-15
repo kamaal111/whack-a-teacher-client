@@ -4,9 +4,7 @@ import './GameInterface.css';
 
 export default function GameInterface(props) {
 
-  console.log('Props:', props)
-
-  // one player in game
+  // One player in game
   if (props.lobbyLength === 1) {
     return (
       <div id="game-interface">
@@ -26,10 +24,13 @@ export default function GameInterface(props) {
     )
   }
 
+  // Two players in game
   if (props.lobbyLength === 2) {
 
+    // Initializes on-screen countdown before game starts
     props.countDownFunction()
 
+    // Game has not ended yet
     if (!props.state.gameOver) {
       while (props.state.countDown > 0) {
         return (
@@ -51,13 +52,16 @@ export default function GameInterface(props) {
         )
       }
 
+      // Count down is over
       if (props.state.countDown === 0) {
         
+        // Initialize game
         if (!props.state.gameStart) {
           props.startGame()
           props.state.gameStart = true
         }
 
+        // While the game is being played
         while (props.state.gameDuration > 0) {
           return (
             <div id="game-interface">
@@ -80,12 +84,20 @@ export default function GameInterface(props) {
       }
     }
 
+      // End game
       props.state.gameOver = true;
 
+      // Return to lobby once countdown is over
+      if (props.state.countDown === 0 && props.state.returnToLobby) {
+        props.deleteLobby()
+      }
+
+      // Stop the game and set the countdown for rematch or returning to lobby
       if (props.state.gameDuration === 0) {
         props.stopGame()
-        if (props.state.countDown === 0) {
-          props.state.countDown = 10
+        if (props.state.countDown === 0 && !props.state.returnToLobby) {
+          props.state.countDown = 5
+          props.state.returnToLobby = true;
         }
         props.countDownFunction()
         console.log('stopped')
@@ -99,5 +111,10 @@ export default function GameInterface(props) {
           </div>
         )
       }
+  }
+  else {
+    return(
+      <p>Hey</p>
+    )
   }
 }

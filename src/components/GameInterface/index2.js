@@ -15,8 +15,9 @@ class GameInterfaceContainer extends React.Component {
     intervalId: 0,
     countDown: 5,
     gameStart: false,
-    gameDuration: 10,
-    gameOver: false
+    gameDuration: 5,
+    gameOver: false,
+    returnToLobby: false
   };
 
   componentDidMount() {
@@ -120,11 +121,18 @@ class GameInterfaceContainer extends React.Component {
     // console.log('res', res);
   };
 
+  deleteLobby = async () => {
+    await request.del(`${url}/games/${this.props.match.params.gameId}`);
+    return this.props.history.push('/lobby');
+  };
+
   render() {
 
     const lobby = this.props.lobbies.find(
       lobby => lobby.id === Number(this.props.match.params.gameId)
     );
+
+    console.log('Lobby:', lobby)
 
     // if there is a lobby
     if (lobby) {
@@ -136,6 +144,7 @@ class GameInterfaceContainer extends React.Component {
           countDownFunction={this.countDown}
           startGame={this.startGame}
           stopGame={this.stopGame}
+          deleteLobby={this.deleteLobby}
         />
       )
     }

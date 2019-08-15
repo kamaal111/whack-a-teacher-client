@@ -114,10 +114,8 @@ class GameInterfaceContainer extends React.Component {
 
   // upon end delete lobby
   deleteLobby = async () => {
-    // wait 10 seconds
-    // clear interval
-    // delete lobby
-    // redirect to lobby list
+    await request.del(`${url}/games/${this.props.match.params.gameId}`);
+    return this.props.history.push('/lobby');
   };
 
   renderGame = () => {
