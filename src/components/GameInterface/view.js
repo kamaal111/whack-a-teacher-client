@@ -8,7 +8,9 @@ export default function GameInterface(props) {
   if (props.lobbyLength === 1) {
     return (
       <div id="game-interface">
+        <div className='button-div'>
         <button onClick={props.backToLobby}>Back to lobby</button>
+        </div>
         <div className="statistics">
           <GameStatistics
             // player={this.props.users.activeUser.name}
@@ -27,94 +29,89 @@ export default function GameInterface(props) {
   // Two players in game
   if (props.lobbyLength === 2) {
 
-    // Initializes on-screen countdown before game starts
-    props.countDownFunction()
+    // Display countdown before game
+    while (props.state.countDown > 0 && !props.state.gameOver) {
+      props.countDownFunction()
 
-    // Game has not ended yet
-    if (!props.state.gameOver) {
-      while (props.state.countDown > 0) {
-        return (
-          <div id="game-interface">
-            <div className="statistics">
-              <GameStatistics
-                // player={this.props.users.activeUser.name}
-                player={'Your name'}
-                score={'P1 score'}
-              />
-            </div>
-            <div id="battlefield">{props.state.countDown}</div>
-            <div className="statistics">
-              <GameStatistics
-                player={'Your opponent'}
-              />
-            </div>
+      return (
+        <div id="game-interface">
+          <div className="statistics">
+            <GameStatistics
+              // player={this.props.users.activeUser.name}
+              player={'Your name'}
+              score={'P1 score'}
+            />
           </div>
-        )
-      }
-
-      // Count down is over
-      if (props.state.countDown === 0) {
-        
-        // Initialize game
-        if (!props.state.gameStart) {
-          props.startGame()
-          props.state.gameStart = true
-        }
-
-        // While the game is being played
-        while (props.state.gameDuration > 0) {
-          return (
-            <div id="game-interface">
-              <div className="statistics">
-                <GameStatistics
-                  // player={this.props.users.activeUser.name}
-                  player={'Your name'}
-                  score={'P1 score'}
-                />
-              </div>
-              <div id="battlefield">{props.state.moles}</div>
-              <div className="statistics">
-                <GameStatistics
-                  player={'Your opponent'}
-                />
-              </div>
-            </div>
-          )
-        }
-      }
+          <div id="battlefield">{props.state.countDown}</div>
+          <div className="statistics">
+            <GameStatistics
+              player={'Your opponent'}
+            />
+          </div>
+        </div>
+      )
     }
 
-      // End game
-      props.state.gameOver = true;
+    // Start game
+    if (props.state.countDown === 0 && props.state.gameDuration > 0) {
 
-      // Return to lobby once countdown is over
-      if (props.state.countDown === 0 && props.state.returnToLobby) {
-        props.deleteLobby()
+      if (!props.state.gameStarted) {
+        props.startGame()
+        props.state.gameStarted = true
       }
 
-      // Stop the game and set the countdown for rematch or returning to lobby
-      if (props.state.gameDuration === 0) {
+      return (
+        <div id="game-interface">
+          <div className="statistics">
+            <GameStatistics
+              // player={this.props.users.activeUser.name}
+              player={'Your name'}
+              score={'P1 score'}
+            />
+          </div>
+          <div id="battlefield">{props.state.moles}</div>
+          <div className="statistics">
+            <GameStatistics
+              player={'Your opponent'}
+            />
+          </div>
+        </div>
+      )
+    }
+
+    // Game over --> display results
+    if (props.state.gameDuration <= 0) {
+
+      if (!props.state.scoresSent) {
         props.stopGame()
-        if (props.state.countDown === 0 && !props.state.returnToLobby) {
-          props.state.countDown = 5
-          props.state.returnToLobby = true;
-        }
-        props.countDownFunction()
-        console.log('stopped')
+      }
+
+      props.state.gameOver = true
+
+      props.countDownLobbyFunction()
+
+      // Timer to go back to lobby
+      while (props.state.countDownLobby > 0) {
+
         return (
           <div id='game-interface'>
             <p>Player one score:</p>
             <p>Player two score:</p>
-
-            <button>Rematch?</button>
-            <button>Back to lobby {props.state.countDown}</button>
+  
+            <div>
+              <button>Back to lobby {props.state.countDownLobby}</button>
+            </div>
           </div>
         )
       }
+
+      // return to lobby
+      props.deleteLobby()
+    }
   }
   else {
     return(
-      <p>Hey</p>
+      null
     )
   }
 }

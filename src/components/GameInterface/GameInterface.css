@@ -28,7 +28,7 @@ div.statistics:nth-child(2) {
 div.statistics:nth-child(4) {
   background-color: yellow;
 }
-#game-interface button {
+#game-interface .button-div {
   position: absolute;
   left: 50%;
   top: 1%;

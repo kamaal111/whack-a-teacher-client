@@ -14,10 +14,11 @@ class GameInterfaceContainer extends React.Component {
     score: 0,
     intervalId: 0,
     countDown: 5,
-    gameStart: false,
+    countDownLobby: 5,
+    gameStarted: false,
     gameDuration: 5,
     gameOver: false,
-    returnToLobby: false
+    scoresSent: false
   };
 
   componentDidMount() {
@@ -29,6 +30,18 @@ class GameInterfaceContainer extends React.Component {
       );
     }
   }
+
+  countDownLobby = () => {
+    const newCount = this.state.countDownLobby - 1;
+    let timer = setTimeout(
+      () => this.setState({ countDownLobby: newCount }),
+      1000
+    );
+
+    if (this.state.countDownLobby === 0) {
+      clearInterval(timer);
+    }
+  };
 
   countDown = () => {
     const newCount = this.state.countDown - 1;
@@ -97,29 +110,26 @@ class GameInterfaceContainer extends React.Component {
         mole.style.display = 'none';
       });
     }, 1000);
+      
+    const playerIndex =
+      this.props.lobbies
+        .find(lobby => lobby.id === Number(this.props.match.params.gameId))
+        .users.findIndex(
+          element => this.props.users.activeUser.id === element.id
+        ) + 1;
 
-    // const findPlayerIndex =
-    //   this.props.lobbies
-    //     .find(lobby => lobby.id === Number(this.props.match.params.gameId))
-    //     .users.findIndex(
-    //       element => this.props.users.activeUser.id === element.id
-    //     ) + 1;
+    const res = await request
+      .put(`${url}/game/${this.props.match.params.gameId}/score/${playerIndex})`)
+      .send({ score: this.state.score })
 
-    // const res = await request
-    //   .put(
-    //     `${url}/game/${this.props.match.params.gameId}/score/${findPlayerIndex}`
-    //   )
-    //   .send({ score: this.state.score });
+    console.log('Res:', res)
+      
+    this.setState({
+      scoresSent: true
+    })  
 
-    // this.setState({
-    //   moleCount: 0,
-    //   moles: [],
-    //   score: 0,
-    //   intervalId: 0
-    // })
-
-    // console.log('res', res);
-  };
+    return res
+  }
 
   deleteLobby = async () => {
     await request.del(`${url}/games/${this.props.match.params.gameId}`);
@@ -137,14 +147,17 @@ class GameInterfaceContainer extends React.Component {
       lobby => lobby.id === Number(this.props.match.params.gameId)
     );
 
+    console.log('Lobby:', lobby)
+
     // if there is a lobby
     if (lobby) {
       return (
         <GameInterface
+          lobby={lobby}
           lobbyLength={lobby.users.length}
           state={this.state}
-          history={this.props.history}
           countDownFunction={this.countDown}
+          countDownLobbyFunction={this.countDownLobby}
           startGame={this.startGame}
           stopGame={this.stopGame}
           deleteLobby={this.deleteLobby}
@@ -154,7 +167,7 @@ class GameInterfaceContainer extends React.Component {
     }
     // Return nothing if there is no lobby
     return (
-      <div></div>
+      null
     )
   }
 
