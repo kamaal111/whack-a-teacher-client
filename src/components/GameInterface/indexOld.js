@@ -164,7 +164,6 @@ class GameInterfaceContainer extends React.Component {
       );
 
       this.setState({ countDown: 10 });
-
     };
 
     const countDowner = () => {
