@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import CreateAccountFormContainer from './components/CreateAccountForm';
 import LobbyListContainer from './components/LobbyList';
 import LoginFormContainer from './components/LoginForm';
-import GameInterfaceContainer from './components/GameInterface/index2';
+import GameInterfaceContainer from './components/GameInterface';
 
 import { allLobbies } from './actions';
 
@@ -18,7 +18,6 @@ class App extends Component {
 
   componentDidMount() {
     this.source.onmessage = event => {
-      // console.log('Data:', JSON.parse(event.data));
       this.props.allLobbies(JSON.parse(event.data));
     };
   }
