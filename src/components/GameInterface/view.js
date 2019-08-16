@@ -1,8 +1,5 @@
 import React from 'react';
 import GameStatistics from '../GameStatistics';
-import * as request from 'superagent';
-
-import url from '../../urls';
 
 import './GameInterface.css';
 
