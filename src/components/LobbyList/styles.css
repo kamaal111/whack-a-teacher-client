@@ -60,3 +60,18 @@ p {
   margin: 0 auto;
   box-sizing: border-box;
 }
+
+@media only screen and (max-width: 1000px) {
+  #lobby-list-container {
+    padding: 0;
+  }
+  #lobby-container, #create-lobby-container {
+    width: 80vw;
+    float: none;
+    height: 50vh;
+    margin: 5vh auto;
+  }
+  table th {
+    width: 30vw;
+  }
+}

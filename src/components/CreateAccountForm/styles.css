@@ -31,8 +31,8 @@ input {
   border: none;
   border-bottom: 2px solid rgb(39, 2, 39);
   background-color: rgb(237, 255, 233);
-  width: 80%;
-  margin: .5rem auto 0 auto;
+  width: 60%;
+  margin: .5rem auto 0 .5rem;
 }
 input:active, input:focus {
   outline: none;
@@ -41,14 +41,19 @@ button {
   padding: .5rem 1rem;
   border-radius: 10px;
   border: 2px solid rgb(39, 2, 39);
+  transition: all .2s ease-out;
 }
 button:active, button:focus {
   outline: none;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 1px rgb(39, 2, 39);
 }
 button:hover {
   cursor: pointer;
   background-color: rgb(39, 2, 39);
   color: rgb(237, 255, 233);
+  box-shadow: 0 2px 3px rgb(39, 2, 39);
+  transform: translateY(-3px);
 }
 .form-feedback {
   margin: 1rem auto;
@@ -65,4 +70,9 @@ a {
   vertical-align: middle;
   transform: rotate(-5deg);
   max-height: 150px;
+}
+@media only screen and (max-width: 1000px) {
+  .form-container {
+    width: 70vw;
+  }
 }
