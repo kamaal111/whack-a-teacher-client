@@ -18,7 +18,6 @@ class App extends Component {
 
   componentDidMount() {
     this.source.onmessage = event => {
-      console.log('Data:', JSON.parse(event.data));
       this.props.allLobbies(JSON.parse(event.data));
     };
   }
@@ -26,25 +25,16 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Route path="/" exact component={CreateAccountFormContainer} />
-        <Route path="/login" exact component={LoginFormContainer} />
-        <Route
-          path="/lobby"
-          render={props => <LobbyListContainer {...props} />}
-        />
-        <Route
-          path="/game/:gameId"
-          exact
-          render={props => <GameInterfaceContainer {...props} />}
-        />
+        <Route exact path="/" component={CreateAccountFormContainer} />
+        <Route exact path="/login" component={LoginFormContainer} />
+        <Route exact path="/lobby" component={LobbyListContainer} />
+        <Route exact path="/game/:gameId" component={GameInterfaceContainer} />
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ lobbies }) => ({ lobbies });
-
 export default connect(
-  mapStateToProps,
+  null,
   { allLobbies }
 )(App);

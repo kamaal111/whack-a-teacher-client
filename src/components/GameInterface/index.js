@@ -2,9 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as request from 'superagent';
 
-import GameStatistics from '../GameStatistics';
-
-import './GameInterface.css';
+import GameInterface from './view';
 import { authorizeUser } from '../../actions';
 
 import url from '../../urls';
@@ -14,21 +12,17 @@ class GameInterfaceContainer extends React.Component {
     moleCount: 0,
     moles: [],
     score: 0,
-    intervalId: 0
+    intervalId: 0,
+    countDown: 10,
+    countDownLobby: 10,
+    gameStarted: false,
+    gameDuration: 30,
+    gameOver: false,
+    scoresSent: false,
+    returnToLobby: false
   };
 
   componentDidMount() {
-    if (this.props.users.activeUser === null) {
-      return this.props.history.push('/login');
-    }
-
-    if (
-      this.props.users.activeUser === null &&
-      this.props.users.activeUser.authorized === false
-    ) {
-      return this.props.history.push('/login');
-    }
-
     if (this.props.users.activeUser !== null) {
       this.props.authorizeUser(
         this.props.users.activeUser.token,
@@ -38,18 +32,47 @@ class GameInterfaceContainer extends React.Component {
     }
   }
 
+  countDownLobby = () => {
+    const newCount = this.state.countDownLobby - 1;
+    let timer = setTimeout(
+      () => this.setState({ countDownLobby: newCount }),
+      1000
+    );
+
+    if (this.state.countDownLobby === 0) {
+      clearInterval(timer);
+    }
+  };
+
+  countDown = () => {
+    const newCount = this.state.countDown - 1;
+    let timer = setTimeout(() => this.setState({ countDown: newCount }), 1000);
+
+    if (this.state.countDown === 0) {
+      clearInterval(timer);
+    }
+  };
+
   launchTimer = () => {
     for (let i = 0; i < 1; i++) {
       this.setState({
         moleCount: this.state.moleCount + 1,
-        moles: [...this.state.moles, this.renderMole()]
+        moles: [...this.state.moles, this.renderMole()],
+        gameDuration: this.state.gameDuration - 1
       });
     }
   };
 
+  startGame = () => {
+    const intervalId = setInterval(this.launchTimer, 600);
+    this.setState({ intervalId, gameStart: true });
+  };
+
   whackMole = e => {
-    const audio = new Audio('http://wohlsoft.ru/docs/Sounds/SMBX_OPL/SMBX_OPL_Sounds_src/WAV/sm-boss-hit.wav');
-    audio.play()
+    const audio = new Audio(
+      'http://wohlsoft.ru/docs/Sounds/SMBX_OPL/SMBX_OPL_Sounds_src/WAV/sm-boss-hit.wav'
+    );
+    audio.play();
     const mole = document.getElementById(`${e.target.id}`);
     mole.style.display = 'none';
     this.setState({ score: this.state.score + 1 });
@@ -59,9 +82,14 @@ class GameInterfaceContainer extends React.Component {
     const randomHeight = Math.min(Math.floor(Math.random() * 80), 70);
     const randomWidth = Math.min(Math.floor(Math.random() * 60), 54.5);
 
+    const arrayOfPictures = ['rein', 'mimi', 'kelley', 'david', 'arien'];
+
     const moleStyle = {
       top: `${randomHeight}vh`,
-      left: `${randomWidth}vw`
+      left: `${randomWidth}vw`,
+      backgroundImage: `url(${require(`../../images/${
+        arrayOfPictures[Math.floor(Math.random() * arrayOfPictures.length)]
+      }.png`)})`
     };
 
     const mole = (
@@ -76,147 +104,107 @@ class GameInterfaceContainer extends React.Component {
     return mole;
   };
 
-  handleGameStop = async () => {
-    clearInterval(this.state.intervalId);
-    const moles = document.getElementsByClassName('mole');
-    const molesArray = Array.from(moles);
-    setTimeout(() => {
-      molesArray.forEach(mole => {
-        mole.style.display = 'none';
-      });
-    }, 1000);
-
-    const findPlayerIndex = this.props.lobbies
-      .find(lobby => lobby.id === Number(this.props.match.params.gameId))
-      .users.findIndex(
-        element => this.props.users.activeUser.id === element.id
-      );
-
-    const res = await request
-      .put(
-        `${url}/game/${this.props.match.params.gameId}/score/${findPlayerIndex +
-          1}`
-      )
-      .send({ score: this.state.score });
-
-    this.setState({
-      moleCount: 0,
-      moles: [],
-      score: 0,
-      intervalId: 0
-    });
-
-    console.log('res', res);
-  };
-
-  renderGame = () => {
-    const { moles } = this.state;
-    console.log(moles);
-    if (this.state.moleCount > 15) {
-      moles.shift();
-    }
-
-    const foundLobby = this.props.lobbies.find(
+  foundLobby = () => {
+    return this.props.lobbies.find(
       lobby => lobby.id === Number(this.props.match.params.gameId)
     );
+  };
 
-    const calculateWinner = () => {
-      const findPlayerIndex = foundLobby.users.findIndex(
-        element => this.props.users.activeUser.id === element.id
-      );
+  findOpponentScore = player1 => {
+    return this.foundLobby().users.findIndex(
+      element => player1.id === element.id
+    ) === 0
+      ? this.foundLobby().playerTwoScore
+      : this.foundLobby().playerOneScore;
+  };
 
-      if (findPlayerIndex === 0) {
-        return foundLobby.playerOneScore > foundLobby.playerTwoScore;
-      }
+  findOpponent = player1 => {
+    if (this.foundLobby().users.length === 2) {
+      return this.foundLobby().users.find(user => user.id !== player1.id).name;
+    }
 
-      if (foundLobby.playerOneScore === foundLobby.playerTwoScore) {
-        return 0;
-      }
+    return '';
+  };
 
-      return foundLobby.playerTwoScore > foundLobby.playerOneScore;
-    };
+  stopGame = async () => {
+    try {
+      clearInterval(this.state.intervalId);
+      const moles = document.getElementsByClassName('mole');
+      const molesArray = Array.from(moles);
+      setTimeout(() => {
+        molesArray.forEach(mole => {
+          mole.style.display = 'none';
+        });
+      }, 1000);
 
-    const handleRematch = async () => {
-      const res = await request.put(
-        `${url}/game/${this.props.match.params.gameId}/rematch`
-      );
+      const playerIndex =
+        this.foundLobby().users.findIndex(
+          element => this.props.users.activeUser.id === element.id
+        ) + 1;
 
-      console.log('res', res);
-    };
+      const res = await request
+        .put(
+          `${url}/game/${this.props.match.params.gameId}/score/${playerIndex}`
+        )
+        .send({ score: this.state.score });
 
-    if (foundLobby.users.length === 2) {
-      if (
-        foundLobby.playerOneScore !== null &&
-        foundLobby.playerTwoScore !== null
-      ) {
-        if (calculateWinner() === false) {
-          return (
-            <div>
-              <h1>LOSER</h1>
-              <button onClick={() => handleRematch()}>REMATCH</button>
-            </div>
-          );
-        }
+      this.setState({
+        scoresSent: true
+      });
 
-        if (calculateWinner() === 0) {
-          return (
-            <div>
-              <h1>DRAW</h1>
-              <button onClick={() => handleRematch()}>REMATCH</button>
-            </div>
-          );
-        }
+      return null;
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-        return (
-          <div>
-            <h1>WINNER</h1>
-            <button onClick={() => handleRematch()}>REMATCH</button>
-          </div>
-        );
-      }
+  deleteLobby = async () => {
+    try {
+      await request.del(`${url}/games/${this.props.match.params.gameId}`);
+      return this.props.history.push('/lobby');
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-      return (
-        <div id="game-interface">
-          <div className="statistics">
-            <GameStatistics player={this.props.users.activeUser.name} score={this.state.score} />
-          </div>
-          <div id="battlefield">{moles}</div>
-          <div className="statistics">
-            <GameStatistics />
-          </div>
-        </div>
-      );
+  backToLobby = async () => {
+    try {
+      await request
+        .put(`${url}/user/${this.props.users.activeUser.id}/remove`)
+        .set('authorization', `Bearer ${this.props.users.activeUser.token}`);
+      return this.props.history.push('/lobby');
+    } catch (error) {
+      console.error(error);
     }
   };
 
   render() {
-    return (
-      <div>
-        {this.renderGame()}
-        <button onClick={this.handleGameStop}>Stop game</button>
-        <button
-          onClick={() => {
-            const intervalId = setInterval(this.launchTimer, 1000);
-            this.setState({ intervalId: intervalId });
-          }}
-        >
-          START
-        </button>
-        <button
-          onClick={() => {
-            authorizeUser(
-              this.props.users.activeUser.token,
-              this.props.users.activeUser.id,
-              null
-            );
-
-            this.props.history.push('/lobby');
-          }}
-        >
-          LEAVE LOBBY
-        </button>
-      </div>
+    const lobby = this.props.lobbies.find(
+      lobby => lobby.id === Number(this.props.match.params.gameId)
     );
+
+    // if there is a lobby
+    if (lobby) {
+      return (
+        <GameInterface
+          name={this.props.users.activeUser.name}
+          lobbyLength={lobby.users.length}
+          state={this.state}
+          countDownFunction={this.countDown}
+          countDownLobbyFunction={this.countDownLobby}
+          startGame={this.startGame}
+          stopGame={this.stopGame}
+          deleteLobby={this.deleteLobby}
+          backToLobby={this.backToLobby}
+          match={this.props.match}
+          playerScore={this.state.score}
+          opponentScore={this.findOpponentScore(this.props.users.activeUser)}
+          opponentName={this.findOpponent(this.props.users.activeUser)}
+        />
+      );
+    }
+    // Return nothing if there is no lobby
+    return null;
   }
 }
 

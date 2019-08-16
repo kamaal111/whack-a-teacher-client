@@ -13,87 +13,92 @@ const loginUser = (status, user) => {
   };
 };
 
-export const createAccount = data => dispatch => {
-  request
-    .post(`${baseUrl}/user`)
-    .send(data)
-    .then(res => {
-      if (res.body.data === 'OK') {
-        const action = loginUser(res.body.data, {
-          name: res.body.name,
-          id: res.body.id,
-          token: res.body.token
-        });
+export const createAccount = data => async dispatch => {
+  try {
+    const res = await request.post(`${baseUrl}/user`).send(data);
 
-        return dispatch(action);
-      }
+    if (res.body.data === 'OK') {
+      const action = loginUser(res.body.data, {
+        name: res.body.name,
+        id: res.body.id,
+        token: res.body.token
+      });
 
-      const action = loginUser(res.body.data, {});
       return dispatch(action);
-    })
-    .catch(console.error);
+    }
+
+    const action = loginUser(res.body.data, null);
+    return dispatch(action);
+  } catch (error) {
+    console.error(error);
+  }
 };
 
-export const loginInAccount = data => dispatch => {
-  request
-    .post(`${baseUrl}/login`)
-    .send(data)
-    .then(res => {
-      if (res.body.data === 'OK') {
-        const action = loginUser(res.body.data, {
-          name: res.body.name,
-          id: res.body.id,
-          token: res.body.token
-        });
+export const loginInAccount = data => async dispatch => {
+  try {
+    const res = await request.post(`${baseUrl}/login`).send(data);
 
-        return dispatch(action);
-      }
+    if (res.body.data === 'OK') {
+      const action = loginUser(res.body.data, {
+        name: res.body.name,
+        id: res.body.id,
+        token: res.body.token
+      });
 
-      const action = loginUser(res.body.data, {});
       return dispatch(action);
-    });
+    }
+
+    const action = loginUser(res.body.data, {});
+    return dispatch(action);
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export const authorizeUser = (token, userId, lobbyId) => async dispatch => {
-  const res = await request
-    .put(`${baseUrl}/user/${userId}`)
-    .send({ id: lobbyId })
-    .set('authorization', `Bearer ${token}`);
+  try {
+    const res = await request
+      .put(`${baseUrl}/user/${userId}`)
+      .send({ id: lobbyId })
+      .set('authorization', `Bearer ${token}`);
 
-  console.log(res.body);
+    if (res.body.data === 'OK') {
+      return dispatch({
+        type: AUTHORIZE_USER,
+        payload: true
+      });
+    }
 
-  if (res.body.data === 'OK') {
     return dispatch({
       type: AUTHORIZE_USER,
-      payload: true
+      payload: false
     });
+  } catch (error) {
+    console.error(error);
   }
-
-  return dispatch({
-    type: AUTHORIZE_USER,
-    payload: false
-  });
 };
 
 export const createLobbyAuthorization = (gameName, token) => async dispatch => {
-  const res = await request
-    .post(`${baseUrl}/lobby`)
-    .send({ game: gameName })
-    .set('authorization', `Bearer ${token}`);
+  try {
+    const res = await request
+      .post(`${baseUrl}/lobby`)
+      .send({ game: gameName })
+      .set('authorization', `Bearer ${token}`);
 
-  console.log(res.body);
+    if (res.body.data === 'OK') {
+      return dispatch({
+        type: AUTHORIZE_USER,
+        payload: true
+      });
+    }
 
-  if (res.body.data === 'OK') {
     return dispatch({
       type: AUTHORIZE_USER,
-      payload: true
+      payload: false
     });
+  } catch (error) {
+    console.error(error);
   }
-
-  return dispatch({
-    type: AUTHORIZE_USER,
-    payload: false
-  });
 };
 
 export const allLobbies = payload => dispatch => {

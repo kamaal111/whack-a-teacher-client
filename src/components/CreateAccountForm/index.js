@@ -9,27 +9,30 @@ function CreateAccountFormContainer({
   users
 }) {
   const [state, setState] = useState({ name: '', password: '' });
-  const [feedback, setFeedback] = useState('')
+  const [feedback, setFeedback] = useState('');
 
   useEffect(() => {
     if (users.status === 'OK' && feedback === '') {
-      setFeedback(' ')
-      history.push('/lobby')
-    }
-    else if (state.name === '' && state.password === '') {
-      setFeedback(' ')
+      setFeedback(' ');
+      history.push('/lobby');
+    } else if (state.name === '' && state.password === '') {
+      setFeedback(' ');
     } else if (users.status === 'OK' && feedback === ' ') {
-      setFeedback(<p className='loader-text'>Creating account...<span className='loader'></span></p>)
-      setTimeout(() => {
-        history.push('/lobby')
-      }, 1500)
-      
-    } else if (users.status === 'BAD REQUEST SIGN UP') {
       setFeedback(
-        'Username already taken. Please choose a different one.'
+        <p className="loader-text">
+          Creating account...<span className="loader" />
+        </p>
       );
+      setTimeout(() => {
+        history.push('/lobby');
+      }, 1500);
+    } else if (users.status === 'BAD REQUEST SIGN UP') {
+      setFeedback('Username already taken. Please choose a different one.');
+      setTimeout(() => {
+        setFeedback(' ');
+      }, 1500);
     }
-  }, [history, users.status]);
+  }, [users.status]);
 
   const onChange = e => {
     setState({ ...state, [e.target.name]: e.target.value });
@@ -40,7 +43,14 @@ function CreateAccountFormContainer({
     createAccountAction(state);
   };
 
-  return <CreateAccountForm onChange={onChange} onSubmit={onSubmit} feedback={feedback} values={state} />;
+  return (
+    <CreateAccountForm
+      onChange={onChange}
+      onSubmit={onSubmit}
+      feedback={feedback}
+      values={state}
+    />
+  );
 }
 
 const mapStateToProps = ({ users }) => ({ users });

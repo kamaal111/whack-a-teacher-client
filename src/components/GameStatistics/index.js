@@ -1,10 +1,19 @@
-import React from 'react'
+import React from 'react';
+import './styles.css'
 
-export default function GameStatistics(props) {
-  return(
+export default function GameStatistics({ player, score }) {
+  if (player && score) {
+    return (
+      <div>
+        <p>{player}</p>
+        <p>Score: {score}</p>
+      </div>
+    );
+  }
+
+  return (
     <div>
-      <p>{props.player}</p>
-      <p>Score: {props.score}</p>
+      <p>{player}</p>
     </div>
-  )
+  );
 }
