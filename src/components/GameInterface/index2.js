@@ -16,7 +16,7 @@ class GameInterfaceContainer extends React.Component {
     countDown: 10,
     countDownLobby: 10,
     gameStarted: false,
-    gameDuration: 300,
+    gameDuration: 10,
     gameOver: false,
     scoresSent: false,
     returnToLobby: false
@@ -112,7 +112,7 @@ class GameInterfaceContainer extends React.Component {
 
   findOpponentScore = player1 => {
     return this.foundLobby().users.findIndex(
-      element => player1 === element.id
+      element => player1.id === element.id
     ) === 0
       ? this.foundLobby().playerTwoScore
       : this.foundLobby().playerOneScore;
