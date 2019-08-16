@@ -13,10 +13,10 @@ class GameInterfaceContainer extends React.Component {
     moles: [],
     score: 0,
     intervalId: 0,
-    countDown: 5,
-    countDownLobby: 5,
+    countDown: 50,
+    countDownLobby: 300,
     gameStarted: false,
-    gameDuration: 5,
+    gameDuration: 300,
     gameOver: false,
     scoresSent: false,
     returnToLobby: false

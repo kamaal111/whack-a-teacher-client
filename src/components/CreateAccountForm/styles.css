@@ -37,7 +37,7 @@ input {
 input:active, input:focus {
   outline: none;
 }
-button {
+#create-account-form button, #login-form button, #create-lobby-form button {
   padding: .5rem 1rem;
   border-radius: 10px;
   border: 2px solid rgb(39, 2, 39);
@@ -45,10 +45,8 @@ button {
 }
 button:active, button:focus {
   outline: none;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 1px rgb(39, 2, 39);
 }
-button:hover {
+#create-account-form button:hover, #login-form button:hover, #create-lobby-form button:hover {
   cursor: pointer;
   background-color: rgb(39, 2, 39);
   color: rgb(237, 255, 233);

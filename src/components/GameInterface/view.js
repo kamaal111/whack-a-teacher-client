@@ -21,8 +21,8 @@ export default function GameInterface({
   if (lobbyLength === 1) {
     return (
       <div id="game-interface">
-        <div className="button-div">
-          <button onClick={backToLobby}>Back to lobby</button>
+        <div className="top-div">
+          <p onClick={backToLobby}>Back to lobby</p>
         </div>
         <div className="statistics">
           <GameStatistics
@@ -34,6 +34,7 @@ export default function GameInterface({
         <div id="battlefield" />
         <div className="statistics">
           <p>Waiting for another player to join...</p>
+          <div className='waiting-loader'></div>
         </div>
       </div>
     );
@@ -54,7 +55,10 @@ export default function GameInterface({
               score={state.score}
             />
           </div>
-          <div id="battlefield">{state.countDown}</div>
+          <div id="battlefield">
+            <p className='instructions'>Whack the teachers as soon as they appear!</p>
+            <p className='countdown'>{state.countDown}</p>
+          </div>
           <div className="statistics">
             <GameStatistics player={opponentName} />
           </div>
