@@ -2,12 +2,13 @@
   background-color: rgb(237, 255, 233);
   position: relative;
 }
-.statistics div {
+.statistics p {
   color: rgb(39, 2, 39);
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  width: 90%;
 }
 .statistics div p:nth-child(1) {
   font-style: italic;

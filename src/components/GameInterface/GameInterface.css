@@ -42,6 +42,7 @@
   /* background-image: url(../../images/arien.png); */
   background-size: 100%;
   border-radius: 50px;
+  background-repeat: no-repeat;
 }
 .mole:hover {
   cursor: pointer;
