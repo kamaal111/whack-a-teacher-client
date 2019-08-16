@@ -1,9 +1,11 @@
 import { ALL_LOBBIES } from '../actions';
 
-export default (state = [], action = {} ) => {
-  switch (action.type) {
+const initialState = [];
+
+export default (state = initialState, { type, payload }) => {
+  switch (type) {
     case ALL_LOBBIES:
-      return action.payload;
+      return payload;
 
     default:
       return state;

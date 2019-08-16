@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+
 import '../CreateAccountForm/styles.css';
 
-export default function LoginForm(props) {
+export default function LoginForm({ onSubmit, onChange, values, feedback }) {
   return (
     <div id="login-form">
       <h1>
@@ -12,7 +13,7 @@ export default function LoginForm(props) {
         </span>
       </h1>
       <div className="form-container">
-        <form onSubmit={props.onSubmit}>
+        <form onSubmit={onSubmit}>
           <h2>Log in</h2>
           <label>
             Username:
@@ -20,8 +21,8 @@ export default function LoginForm(props) {
               type="text"
               name="name"
               required
-              onChange={props.onChange}
-              value={props.values.username}
+              onChange={onChange}
+              value={values.username}
             />
           </label>
           <label>
@@ -30,13 +31,13 @@ export default function LoginForm(props) {
               type="password"
               name="password"
               required
-              onChange={props.onChange}
-              value={props.values.password}
+              onChange={onChange}
+              value={values.password}
             />
           </label>
           <button type="submit">Log in</button>
         </form>
-        <div className="form-feedback">{props.feedback}</div>
+        <div className="form-feedback">{feedback}</div>
         <p>
           Don't have an account yet? <Link to="/">Sign up here</Link>
         </p>

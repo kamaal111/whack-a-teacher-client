@@ -3,20 +3,31 @@ import GameStatistics from '../GameStatistics';
 
 import './GameInterface.css';
 
-export default function GameInterface(props) {
-
+export default function GameInterface({
+  lobbyLength,
+  backToLobby,
+  name,
+  state,
+  startGame,
+  countDownFunction,
+  stopGame,
+  countDownLobbyFunction,
+  playerScore,
+  opponentScore,
+  deleteLobby
+}) {
   // One player in game
-  if (props.lobbyLength === 1) {
+  if (lobbyLength === 1) {
     return (
       <div id="game-interface">
         <div className="button-div">
-          <button onClick={props.backToLobby}>Back to lobby</button>
+          <button onClick={backToLobby}>Back to lobby</button>
         </div>
         <div className="statistics">
           <GameStatistics
             // player={this.props.users.activeUser.name}
-            player={props.name}
-            score={props.state.score}
+            player={name}
+            score={state.score}
           />
         </div>
         <div id="battlefield" />
@@ -28,21 +39,21 @@ export default function GameInterface(props) {
   }
 
   // Two players in game
-  if (props.lobbyLength === 2) {
+  if (lobbyLength === 2) {
     // Display countdown before game
-    while (props.state.countDown > 0 && !props.state.gameOver) {
-      props.countDownFunction();
+    while (state.countDown > 0 && !state.gameOver) {
+      countDownFunction();
 
       return (
         <div id="game-interface">
           <div className="statistics">
             <GameStatistics
               // player={this.props.users.activeUser.name}
-              player={props.name}
-              score={props.state.score}
+              player={name}
+              score={state.score}
             />
           </div>
-          <div id="battlefield">{props.state.countDown}</div>
+          <div id="battlefield">{state.countDown}</div>
           <div className="statistics">
             <GameStatistics player={'Your opponent'} />
           </div>
@@ -51,10 +62,10 @@ export default function GameInterface(props) {
     }
 
     // Start game
-    if (props.state.countDown === 0 && props.state.gameDuration > 0) {
-      if (!props.state.gameStarted) {
-        props.startGame();
-        props.state.gameStarted = true;
+    if (state.countDown === 0 && state.gameDuration > 0) {
+      if (!state.gameStarted) {
+        startGame();
+        state.gameStarted = true;
       }
 
       return (
@@ -62,11 +73,11 @@ export default function GameInterface(props) {
           <div className="statistics">
             <GameStatistics
               // player={this.props.users.activeUser.name}
-              player={props.name}
-              score={props.state.score}
+              player={name}
+              score={state.score}
             />
           </div>
-          <div id="battlefield">{props.state.moles}</div>
+          <div id="battlefield">{state.moles}</div>
           <div className="statistics">
             <GameStatistics player={'Your opponent'} />
           </div>
@@ -75,36 +86,36 @@ export default function GameInterface(props) {
     }
 
     // Game over --> display results
-    if (props.state.gameDuration <= 0 && !props.state.returnToLobby) {
-      if (!props.state.scoresSent) {
-        props.stopGame();
+    if (state.gameDuration <= 0 && !state.returnToLobby) {
+      if (!state.scoresSent) {
+        stopGame();
       }
 
-      if (props.state.countDownLobby === 0) {
-        props.state.returnToLobby = true
+      if (state.countDownLobby === 0) {
+        state.returnToLobby = true;
       }
 
-      props.countDownLobbyFunction()
+      countDownLobbyFunction();
 
       return (
         <div id="game-interface">
-          <div className='final-result'>
-            <p>Your score: {props.playerScore}</p>
-            <p>Your opponent's score: {props.opponentScore}</p>
+          <div className="final-result">
+            <p>Your score: {playerScore}</p>
+            <p>Your opponent's score: {opponentScore}</p>
 
             <div>
-              <p class='italic'>Back to lobby in {props.state.countDownLobby} seconds</p>
+              <p class="italic">
+                Back to lobby in {state.countDownLobby} seconds
+              </p>
             </div>
           </div>
         </div>
       );
     }
 
-
-    props.deleteLobby();
+    deleteLobby();
 
     return null;
-
   } else {
     return null;
   }

@@ -119,45 +119,57 @@ class GameInterfaceContainer extends React.Component {
   };
 
   stopGame = async () => {
-    clearInterval(this.state.intervalId);
-    const moles = document.getElementsByClassName('mole');
-    const molesArray = Array.from(moles);
-    setTimeout(() => {
-      molesArray.forEach(mole => {
-        mole.style.display = 'none';
+    try {
+      clearInterval(this.state.intervalId);
+      const moles = document.getElementsByClassName('mole');
+      const molesArray = Array.from(moles);
+      setTimeout(() => {
+        molesArray.forEach(mole => {
+          mole.style.display = 'none';
+        });
+      }, 1000);
+
+      const playerIndex =
+        this.foundLobby().users.findIndex(
+          element => this.props.users.activeUser.id === element.id
+        ) + 1;
+
+      const res = await request
+        .put(
+          `${url}/game/${this.props.match.params.gameId}/score/${playerIndex})`
+        )
+        .send({ score: this.state.score });
+
+      console.log('Res:', res);
+
+      this.setState({
+        scoresSent: true
       });
-    }, 1000);
 
-    const playerIndex =
-      this.foundLobby().users.findIndex(
-        element => this.props.users.activeUser.id === element.id
-      ) + 1;
-
-    const res = await request
-      .put(
-        `${url}/game/${this.props.match.params.gameId}/score/${playerIndex})`
-      )
-      .send({ score: this.state.score });
-
-    console.log('Res:', res);
-
-    this.setState({
-      scoresSent: true
-    });
-
-    return res;
+      return res;
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   deleteLobby = async () => {
-    await request.del(`${url}/games/${this.props.match.params.gameId}`);
-    return this.props.history.push('/lobby');
+    try {
+      await request.del(`${url}/games/${this.props.match.params.gameId}`);
+      return this.props.history.push('/lobby');
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   backToLobby = async () => {
-    await request
-      .put(`${url}/user/${this.props.users.activeUser.id}/remove`)
-      .set('authorization', `Bearer ${this.props.users.activeUser.token}`);
-    return this.props.history.push('/lobby');
+    try {
+      await request
+        .put(`${url}/user/${this.props.users.activeUser.id}/remove`)
+        .set('authorization', `Bearer ${this.props.users.activeUser.token}`);
+      return this.props.history.push('/lobby');
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   render() {
