@@ -5,9 +5,35 @@
 #battlefield {
   width: 60%;
   height: 100%;
-  background-color: rgb(206, 229, 255);
+  background-color: rgb(39, 2, 39);
+  box-sizing: border-box;
   position: relative;
   float: left;
+}
+#battlefield .instructions {
+  color: rgb(237, 255, 233);
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%);
+  font-style: italic;
+}
+#battlefield .countdown {
+  color: rgb(237, 255, 233);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 50px;
+  animation: getLarger 1s infinite linear;
+}
+@keyframes getLarger {
+  0% {
+    font-size: 1px;
+  }
+  100% {
+    font-size: 50px;
+  }
 }
 .mole {
   width: 5.5vw;
@@ -17,22 +43,26 @@
   background-size: 100%;
   border-radius: 50px;
 }
+.mole:hover {
+  cursor: pointer;
+}
 .statistics {
   float: left;
   width: 20%;
   height: 100%;
 }
-div.statistics:nth-child(2) {
-  background-color: red;
-}
-div.statistics:nth-child(4) {
-  background-color: yellow;
-}
-#game-interface .button-div {
+#game-interface .top-div {
   position: absolute;
   left: 50%;
-  top: 1%;
+  top: 2%;
   transform: translateX(-50%);
+}
+.top-div p {
+  border-bottom: 1px solid rgb(39, 2, 39);
+  padding-bottom: 1px;
+}
+.top-div p:hover {
+  cursor: pointer;
 }
 #game-interface .final-result {
   margin-top: 20vh;

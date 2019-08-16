@@ -1,0 +1,36 @@
+.statistics {
+  background-color: rgb(237, 255, 233);
+  position: relative;
+}
+.statistics div {
+  color: rgb(39, 2, 39);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.statistics div p:nth-child(1) {
+  font-style: italic;
+}
+.statistics p {
+  margin-bottom: 2vh;
+}
+.statistics .waiting-loader {
+  height: 50px;
+  width: 50px;
+  background-color: rgb(237, 255, 233);
+  border-radius: 50%;
+  border-top: 3px solid rgb(39, 2, 39);
+  position: absolute;
+  left: 40%;
+  top: 60%;
+  animation: spin 1.2s infinite linear;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
