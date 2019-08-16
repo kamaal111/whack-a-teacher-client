@@ -16,7 +16,7 @@ class GameInterfaceContainer extends React.Component {
     countDown: 10,
     countDownLobby: 10,
     gameStarted: false,
-    gameDuration: 30,
+    gameDuration: 300,
     gameOver: false,
     scoresSent: false,
     returnToLobby: false
