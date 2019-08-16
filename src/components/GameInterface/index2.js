@@ -13,8 +13,8 @@ class GameInterfaceContainer extends React.Component {
     moles: [],
     score: 0,
     intervalId: 0,
-    countDown: 5,
-    countDownLobby: 30,
+    countDown: 10,
+    countDownLobby: 10,
     gameStarted: false,
     gameDuration: 10,
     gameOver: false,
@@ -64,7 +64,7 @@ class GameInterfaceContainer extends React.Component {
   };
 
   startGame = () => {
-    const intervalId = setInterval(this.launchTimer, 1000);
+    const intervalId = setInterval(this.launchTimer, 600);
     this.setState({ intervalId, gameStart: true });
   };
 
