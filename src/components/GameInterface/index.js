@@ -148,8 +148,6 @@ class GameInterfaceContainer extends React.Component {
         )
         .send({ score: this.state.score });
 
-      console.log('res', res);
-
       this.setState({
         scoresSent: true
       });

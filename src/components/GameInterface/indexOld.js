@@ -127,8 +127,6 @@ class GameInterfaceContainer extends React.Component {
       intervalId: 0,
       gameStop: true
     });
-
-    console.log('res', res);
   };
 
   // upon end delete lobby
@@ -140,7 +138,6 @@ class GameInterfaceContainer extends React.Component {
 
   renderGame = () => {
     const { moles } = this.state;
-    console.log(moles);
     if (this.state.moleCount > 15) {
       moles.shift();
     }
@@ -167,8 +164,6 @@ class GameInterfaceContainer extends React.Component {
       );
 
       this.setState({ countDown: 10 });
-
-      console.log('res', res);
     };
 
     const countDowner = () => {
