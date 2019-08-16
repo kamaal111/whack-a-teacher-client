@@ -1,5 +1,6 @@
 import React from 'react';
 import GameStatistics from '../GameStatistics';
+import Header from '../Header'
 
 import './GameInterface.css';
 
@@ -81,7 +82,7 @@ export default function GameInterface({
               score={state.score}
             />
           </div>
-          <div id="battlefield">{state.moles}</div>
+          <div id="battlefield"><p className='game-countdown'>{state.gameDuration}</p>{state.moles}</div>
           <div className="statistics">
             <GameStatistics player={'Your opponent'} />
           </div>
@@ -102,15 +103,18 @@ export default function GameInterface({
       countDownLobbyFunction();
 
       return (
-        <div id="game-interface">
-          <div className="final-result">
-            <p>Your score: {playerScore}</p>
-            <p>Your opponent's score: {opponentScore}</p>
+        <div>
+          <Header />
+          <div id="game-interface">
+            <div className="final-result">
+              <p>Your score: {playerScore}</p>
+              <p>Your opponent's score: {opponentScore}</p>
 
-            <div>
-              <p class="italic">
-                Back to lobby in {state.countDownLobby} seconds
-              </p>
+              <div>
+                <p class="italic">
+                  Back to lobby in {state.countDownLobby} seconds
+                </p>
+              </div>
             </div>
           </div>
         </div>

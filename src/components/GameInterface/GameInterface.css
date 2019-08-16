@@ -1,5 +1,5 @@
 #game-interface {
-  margin: 10vh auto;
+  margin: 10vh auto 0 auto;
   height: 80vh;
 }
 #battlefield {
@@ -32,7 +32,7 @@
     font-size: 1px;
   }
   100% {
-    font-size: 50px;
+    font-size: 80px;
   }
 }
 .mole {
@@ -45,6 +45,14 @@
 }
 .mole:hover {
   cursor: pointer;
+}
+.game-countdown {
+  color: rgb(39, 2, 39);
+  font-size: 24px;
+  position: absolute;
+  top: -8%;
+  left: 50%;
+  transform: translateX(-50%);
 }
 .statistics {
   float: left;
@@ -64,11 +72,11 @@
 .top-div p:hover {
   cursor: pointer;
 }
-#game-interface .final-result {
-  margin-top: 20vh;
-}
 #game-interface .final-result p {
   padding: 1rem;
+}
+#game-interface .final-result p:nth-child(2) {
+  margin-bottom: 10vh;
 }
 .italic {
   font-style: italic;
