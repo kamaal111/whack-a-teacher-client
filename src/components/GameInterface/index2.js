@@ -112,7 +112,7 @@ class GameInterfaceContainer extends React.Component {
 
   findOpponentScore = player1 => {
     return this.foundLobby().users.findIndex(
-      element => player1 === element.id
+      element => player1.id === element.id
     ) === 0
       ? this.foundLobby().playerTwoScore
       : this.foundLobby().playerOneScore;
