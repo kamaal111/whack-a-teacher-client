@@ -136,17 +136,17 @@ class GameInterfaceContainer extends React.Component {
 
       const res = await request
         .put(
-          `${url}/game/${this.props.match.params.gameId}/score/${playerIndex})`
+          `${url}/game/${this.props.match.params.gameId}/score/${playerIndex}`
         )
         .send({ score: this.state.score });
 
-      console.log('Res:', res);
+      console.log('res', res);
 
       this.setState({
         scoresSent: true
       });
 
-      return res;
+      return null;
     } catch (error) {
       console.error(error);
     }
@@ -177,8 +177,6 @@ class GameInterfaceContainer extends React.Component {
       lobby => lobby.id === Number(this.props.match.params.gameId)
     );
 
-    console.log('Lobby:', lobby);
-    
     // if there is a lobby
     if (lobby) {
       return (
