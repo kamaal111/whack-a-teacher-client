@@ -15,7 +15,8 @@ export default function GameInterface({
   countDownLobbyFunction,
   playerScore,
   opponentScore,
-  deleteLobby
+  deleteLobby,
+  opponentName
 }) {
   // One player in game
   if (lobbyLength === 1) {
@@ -60,7 +61,7 @@ export default function GameInterface({
             <p className='countdown'>{state.countDown}</p>
           </div>
           <div className="statistics">
-            <GameStatistics player={'Your opponent'} />
+            <GameStatistics player={opponentName} />
           </div>
         </div>
       );
@@ -84,7 +85,7 @@ export default function GameInterface({
           </div>
           <div id="battlefield"><p className='game-countdown'>{state.gameDuration}</p>{state.moles}</div>
           <div className="statistics">
-            <GameStatistics player={'Your opponent'} />
+            <GameStatistics player={opponentName} />
           </div>
         </div>
       );
