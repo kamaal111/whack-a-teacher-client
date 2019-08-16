@@ -118,6 +118,14 @@ class GameInterfaceContainer extends React.Component {
       : this.foundLobby().playerOneScore;
   };
 
+  findOpponent = player1 => {
+    if (this.foundLobby().users.length === 2) {
+      return this.foundLobby().users.find(user => user.id !== player1.id).name;
+    }
+
+    return '';
+  };
+
   stopGame = async () => {
     try {
       clearInterval(this.state.intervalId);
@@ -192,7 +200,8 @@ class GameInterfaceContainer extends React.Component {
           backToLobby={this.backToLobby}
           match={this.props.match}
           playerScore={this.state.score}
-          opponentScore={this.findOpponentScore(this.props.users.activeUser.id)}
+          opponentScore={this.findOpponentScore(this.props.users.activeUser)}
+          opponentName={this.findOpponent(this.props.users.activeUser)}
         />
       );
     }
