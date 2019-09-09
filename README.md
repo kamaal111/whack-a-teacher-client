@@ -6,7 +6,7 @@
 To play the game, head to this [website](https://whack-a-teacher.netlify.com)
 
 
-A real-time "whack a mole" multiplayer game made using React and sever-sent events
+_A real-time "whack a mole" multiplayer game made using React and sever-sent events_
 
 ## Features
 
@@ -23,7 +23,7 @@ A real-time "whack a mole" multiplayer game made using React and sever-sent even
 -   [Superagent](http://visionmedia.github.io/superagent/)
 
 
-## Installition
+## Installation
 
 ```bash
 > git clone git@github.com:nicolaurech/whack-a-teacher-client.git
