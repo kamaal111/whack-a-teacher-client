@@ -6,7 +6,7 @@
 To play the game, head to this [website](https://whack-a-teacher.netlify.com)
 
 
-A real-time Whack A Mole game built with React and server-sent events
+A real-time "whack a mole" multiplayer game made using React and sever-sent events
 
 ## Features
 
