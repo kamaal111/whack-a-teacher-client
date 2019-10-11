@@ -1,7 +1,7 @@
 # Whack A Teacher
 
 #### The backend for this project is found [here](https://github.com/kamaal111/whack-a-teacher-server)
-#### Made in collaboration with [Kamaal Farah](https://github.com/kamaal111)
+#### Made in collaboration with [Nicola Urech](https://github.com/nicolaurech)
 
 To play the game, head to this [website](https://whack-a-teacher.netlify.com)
 
